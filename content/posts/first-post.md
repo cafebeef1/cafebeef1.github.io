@@ -4,4 +4,4 @@ draft = false
 title = 'First Post'
 +++
 
-Hello
+blog搭建好了, 以后可以愉快的写blog了 :)
