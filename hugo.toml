@@ -1,7 +1,7 @@
 baseURL = 'https://cafebeef1.github.io/'
 languageCode = 'zh-cn'
 title = "cafebeef1's blog"
-theme = "beautifulhugo"
+theme = "anubis2"
 
 [params]
     subtitle = "行到水穷处, 坐看云起时."
