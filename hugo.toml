@@ -1,0 +1,4 @@
+baseURL = 'https://cafebeef1.github.io/'
+languageCode = 'en-us'
+title = "cafebeef1's blog"
+theme = "beautifulhugo"
