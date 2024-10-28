@@ -5,9 +5,16 @@
     <link>https://cafebeef1.github.io/</link>
     <description>Recent content on cafebeef1&#39;s blog</description>
     <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 28 Oct 2024 13:26:20 +0800</lastBuildDate>
+    <language>zh-cn</language>
+    <lastBuildDate>Mon, 28 Oct 2024 14:46:24 +0800</lastBuildDate>
     <atom:link href="https://cafebeef1.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>About</title>
+      <link>https://cafebeef1.github.io/about/</link>
+      <pubDate>Mon, 28 Oct 2024 14:46:24 +0800</pubDate>
+      <guid>https://cafebeef1.github.io/about/</guid>
+      <description>&lt;p&gt;菜鸟程序员一枚.&lt;/p&gt;&#xA;&lt;p&gt;计划分享关于 &lt;code&gt;编程&lt;/code&gt;, &lt;code&gt;读书&lt;/code&gt;, &lt;code&gt;运动&lt;/code&gt; 等内容.&lt;/p&gt;</description>
+    </item>
     <item>
       <title>First Post</title>
       <link>https://cafebeef1.github.io/posts/first-post/</link>

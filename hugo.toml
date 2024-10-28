@@ -1,4 +1,20 @@
 baseURL = 'https://cafebeef1.github.io/'
-languageCode = 'en-us'
+languageCode = 'zh-cn'
 title = "cafebeef1's blog"
 theme = "beautifulhugo"
+
+[params]
+subtitle = "行到水穷处, 坐看云起时."
+[params.contact]
+email = "cafebeef1@gmail.com"
+
+
+[menus]
+[[menus.main]]
+name = 'Home'
+pageRef = '/'
+weight = 10
+[[menus.main]]
+name = 'About'
+pageRef = '/about'
+weight = 20
