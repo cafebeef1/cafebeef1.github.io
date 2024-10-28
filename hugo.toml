@@ -4,10 +4,12 @@ title = "cafebeef1's blog"
 theme = "beautifulhugo"
 
 [params]
-subtitle = "行到水穷处, 坐看云起时."
+    subtitle = "行到水穷处, 坐看云起时."
 [params.contact]
-email = "cafebeef1@gmail.com"
-
+    email = "cafebeef1@gmail.com"
+[params.utterances]
+    owner = "cafebeef1"
+    repo = "cafebeef1.github.io"
 
 [menus]
 [[menus.main]]
