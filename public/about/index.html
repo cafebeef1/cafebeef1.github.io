@@ -27,6 +27,8 @@
 
 
 
+    
+
 
 
     
@@ -164,7 +166,11 @@
 
 
 
+    
 
+
+
+    
 
 
 
@@ -191,7 +197,7 @@
 
     <script>
         const STORAGE_KEY = 'user-color-scheme'
-        const defaultTheme = "light"
+        const defaultTheme = "auto"
 
         let currentTheme
         let switchButton
@@ -264,6 +270,52 @@
         <ul class="social-icons noselect">
 
 
+    
+        <li>
+            <a href="https://github.com/cafebeef1/cafebeef1.github.io" title="Github" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-brand-github"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
+    
+        <li>
+            <a href="cafebeef1@gmail.com" title="Email" rel="me">
+            <span class="inline-svg">
+
+    
+
+
+    
+    
+    
+    
+    
+
+    <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-mail"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 7a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v10a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2v-10z" /><path d="M3 7l9 6l9 -6" /></svg>
+
+
+</span>
+
+            </a>
+        </li>
+    
+
 
 
 
@@ -305,9 +357,11 @@
         
         <a class="" href="http://localhost:1313/" title="">Home</a>
         
-        <a class="" href="http://localhost:1313/posts/" title="">Posts</a>
+        <a class="" href="http://localhost:1313/about/" title="">About</a>
         
-        <a class=" active" href="http://localhost:1313/about/" title="">About</a>
+        <a class="" href="http://localhost:1313/tags/" title="">Tags</a>
+        
+        <a class="" href="http://localhost:1313/posts/" title="">Archive</a>
         
     </nav>
 
@@ -333,6 +387,8 @@
             </header>
             
 
+    
+
 
 
 <div class="post-info noselect">
@@ -344,7 +400,7 @@
     
 
     <a class="post-hidden-url u-url" href="/about/">/about/</a>
-    <a href="http://localhost:1313/" class="p-name p-author post-hidden-author h-card" rel="me"></a>
+    <a href="http://localhost:1313/" class="p-name p-author post-hidden-author h-card" rel="me">cafebeef1@gmail.com</a>
 
 
     <div class="post-taxonomies">
@@ -358,13 +414,9 @@
         
 
   
-  
 
 
 
-
-  
-  
 
 
 
@@ -396,6 +448,8 @@
 
     
     
+        
+    
 
     
         
@@ -408,9 +462,62 @@
         
 
 
+    
+
+
+<script src="https://utteranc.es/client.js"
+        repo="cafebeef1/hugotalks"
+        theme="github-light"
+        label=""
+        issue-term="url"
+        crossorigin="anonymous"
+        async>
+</script>
 
 
 
+
+
+
+
+
+            
+
+<script>
+        function detectCurrentScheme2() {
+                const defaultTheme = "auto";
+                if (localStorage !== null && localStorage.getItem("user-color-scheme")) {
+                        return localStorage.getItem("user-color-scheme");
+                }
+                if (defaultTheme === "dark" || defaultTheme === "light") {
+                        return defaultTheme;
+                }
+                return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+        }
+
+        let giscusTheme = detectCurrentScheme2();
+        let giscusAttributes = {
+                src: "https://giscus.app/client.js",
+                "data-repo": "cafebeef1\/blogtalks",
+                "data-repo-id": "R_kgDONG7sjQ",
+                "data-category": "Announcements",
+                "data-category-id": "DIC_kwDOLEp76c4CcbPS",
+                "data-mapping": "pathname",
+                "data-strict": "0",
+                "data-reactions-enabled": "1",
+                "data-emit-metadata": "0",
+                "data-input-position": "bottom",
+                "data-theme": giscusTheme,
+                "data-lang": "en",
+                crossorigin: "anonymous",
+                lazyload: "false",
+                async: true,
+        };
+        let main = document.querySelector("main");
+        let giscusScript = document.createElement("script");
+        Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+        main.appendChild(giscusScript);
+</script>
 
 
 
@@ -431,7 +538,7 @@
         
 
         <div style="display: flex; align-items: center; gap:8px">
-            ©  2024
+            ©  cafebeef1,  2024
             
         </div>
         <div style="display:flex;align-items: center">
@@ -451,7 +558,7 @@
 
     <p class="h-card vcard">
 
-    <a href=http://localhost:1313/ class="p-name u-url url fn" rel="me"></a>
+    <a href=http://localhost:1313/ class="p-name u-url url fn" rel="me">map[email:cafebeef1@gmail.com location:China name:cafebeef1]</a>
 
     
 

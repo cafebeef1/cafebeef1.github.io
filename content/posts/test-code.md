@@ -11,9 +11,9 @@ image: "/images/熊猫.png"
 tags: ["programming", "C", "CPP", "Go", "Rust", "Python"]
 draft: false
 
-comment: true
 toc: true
-autoCollapseToc: true
+autoCollapseToc: false
+comments: true
 postMetaInFooter: true
 hiddenFromHomePage: false
 ---

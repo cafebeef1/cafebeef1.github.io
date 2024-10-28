@@ -7,18 +7,39 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     
+      
+        <managingEditor>cafebeef1@gmail.com
+          
+            (cafebeef1)
+          
+        </managingEditor>
+      
+
+      
+    
 
     
-    <lastBuildDate>Mon, 28 Oct 2024 16:04:03 +0800</lastBuildDate>
+    <lastBuildDate>Mon, 28 Oct 2024 17:49:32 +0800</lastBuildDate>
     
     <atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
+      <title>About</title>
+      <link>/about/</link>
+      <pubDate>Mon, 28 Oct 2024 17:49:32 +0800</pubDate>
+      <author>cafebeef1@gmail.com (cafebeef1)</author>
+      <guid>/about/</guid>
+      <description>&lt;p&gt;菜鸟程序员一枚.&lt;/p&gt;
+&lt;p&gt;计划分享关于 &lt;code&gt;编程&lt;/code&gt;, &lt;code&gt;读书&lt;/code&gt;, &lt;code&gt;运动&lt;/code&gt; 等内容.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Test Code</title>
       <link>/posts/test-code/</link>
       <pubDate>Mon, 28 Oct 2024 16:04:03 +0800</pubDate>
-      
+      <author>cafebeef1@gmail.com (cafebeef1)</author>
       <guid>/posts/test-code/</guid>
       <description>&lt;h1 id=&#34;hello-world&#34; &gt;
 &lt;div&gt;
@@ -97,7 +118,7 @@
       <title>Test Image</title>
       <link>/posts/test-image/</link>
       <pubDate>Mon, 28 Oct 2024 15:21:48 +0800</pubDate>
-      
+      <author>cafebeef1@gmail.com (cafebeef1)</author>
       <guid>/posts/test-image/</guid>
       <description>&lt;p&gt;引用图片测试
 &lt;img src=&#34;http://localhost:1313/images/%E7%86%8A%E7%8C%AB.png&#34; alt=&#34;国宝&#34; title=&#34;熊猫&#34;&gt;&lt;/p&gt;
@@ -105,21 +126,10 @@
     </item>
     
     <item>
-      <title>About</title>
-      <link>/about/</link>
-      <pubDate>Mon, 28 Oct 2024 14:46:24 +0800</pubDate>
-      
-      <guid>/about/</guid>
-      <description>&lt;p&gt;菜鸟程序员一枚.&lt;/p&gt;
-&lt;p&gt;计划分享关于 &lt;code&gt;编程&lt;/code&gt;, &lt;code&gt;读书&lt;/code&gt;, &lt;code&gt;运动&lt;/code&gt; 等内容.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
       <title>First Post</title>
       <link>/posts/first-post/</link>
       <pubDate>Mon, 28 Oct 2024 13:26:20 +0800</pubDate>
-      
+      <author>cafebeef1@gmail.com (cafebeef1)</author>
       <guid>/posts/first-post/</guid>
       <description>&lt;p&gt;blog搭建好了, 以后可以愉快的写blog了 :)&lt;/p&gt;
 </description>

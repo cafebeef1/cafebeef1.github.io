@@ -7,6 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-cn</language>
     
+      
+        <managingEditor>cafebeef1@gmail.com
+          
+            (cafebeef1)
+          
+        </managingEditor>
+      
+
+      
+    
 
     
     <lastBuildDate>Mon, 28 Oct 2024 16:04:03 +0800</lastBuildDate>
@@ -18,7 +28,7 @@
       <title>Test Code</title>
       <link>/posts/test-code/</link>
       <pubDate>Mon, 28 Oct 2024 16:04:03 +0800</pubDate>
-      
+      <author>cafebeef1@gmail.com (cafebeef1)</author>
       <guid>/posts/test-code/</guid>
       <description>&lt;h1 id=&#34;hello-world&#34; &gt;
 &lt;div&gt;
