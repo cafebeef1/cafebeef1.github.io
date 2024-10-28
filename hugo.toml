@@ -11,6 +11,10 @@ email = "cafebeef1@gmail.com"
 
 [menus]
 [[menus.main]]
+name = "Posts"
+pageRef = '/posts'
+weight = 15
+[[menus.main]]
 name = 'Home'
 pageRef = '/'
 weight = 10

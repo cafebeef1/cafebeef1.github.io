@@ -2,17 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on cafebeef1&#39;s blog</title>
-    <link>https://cafebeef1.github.io/posts/</link>
+    <link>http://localhost:1313/posts/</link>
     <description>Recent content in Posts on cafebeef1&#39;s blog</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Mon, 28 Oct 2024 13:26:20 +0800</lastBuildDate>
-    <atom:link href="https://cafebeef1.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Oct 2024 15:21:48 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Test Image</title>
+      <link>http://localhost:1313/posts/test-image/</link>
+      <pubDate>Mon, 28 Oct 2024 15:21:48 +0800</pubDate>
+      <guid>http://localhost:1313/posts/test-image/</guid>
+      <description>&lt;p&gt;引用图片测试&#xA;&lt;img src=&#34;http://localhost:1313/images/%E7%86%8A%E7%8C%AB.png&#34; alt=&#34;国宝&#34; title=&#34;熊猫&#34;&gt;&lt;/p&gt;</description>
+    </item>
     <item>
       <title>First Post</title>
-      <link>https://cafebeef1.github.io/posts/first-post/</link>
+      <link>http://localhost:1313/posts/first-post/</link>
       <pubDate>Mon, 28 Oct 2024 13:26:20 +0800</pubDate>
-      <guid>https://cafebeef1.github.io/posts/first-post/</guid>
+      <guid>http://localhost:1313/posts/first-post/</guid>
       <description>&lt;p&gt;blog搭建好了, 以后可以愉快的写blog了 :)&lt;/p&gt;</description>
     </item>
   </channel>
