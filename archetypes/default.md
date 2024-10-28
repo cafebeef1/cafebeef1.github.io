@@ -12,5 +12,5 @@ image: ""
 tags: []
 draft: true
 toc: true
-comment: true
+disable_comments: false
 ---

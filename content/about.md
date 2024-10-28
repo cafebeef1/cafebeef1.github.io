@@ -12,8 +12,7 @@ image: ""
 tags: []
 draft: false
 toc: false
-comments: false
-comment: false
+disable_comments: true
 ---
 
 菜鸟程序员一枚. 
