@@ -1,0 +1,8 @@
+<h{{ .Level }} id="{{ .Anchor | safeURL }}" {{ if .Attributes.style }}style="{{ .Attributes.style | safeCSS }}"{{ end }}>
+<div>
+    <a href="#{{ .Anchor }}">
+        {{ range seq 2 .Level}}#{{end}}
+    </a>
+    {{ .Text | safeHTML }}
+</div>
+</h{{ .Level }}>

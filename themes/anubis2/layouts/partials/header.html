@@ -1,0 +1,26 @@
+<div class="header-top">
+    <div class="header-top-left">
+        {{ partial "site-title.html" . }}
+        {{ partial "theme-switcher.html" . }}
+        {{ partial "social-icons.html" . }}
+    </div>
+    <div class="header-top-right">
+
+    </div>
+</div>
+
+{{ if .Site.Menus.main }}
+    <nav class="noselect">
+        {{ $currentPage := . }}
+        {{ range .Site.Menus.main }}
+        <a class="{{if or ($currentPage.IsMenuCurrent "main" .) ($currentPage.HasMenuCurrent "main" .) }} active{{end}}" href="{{ .URL | absLangURL }}" title="{{ .Title }}">{{ .Name }}</a>
+        {{ end }}
+    </nav>
+{{ else }}
+    <nav></nav>
+{{ end }}
+
+{{/* .Params is the current page config. .Site.Params is globall config in hugo.toml */}}
+{{ if or .Site.Params.math .Params.math }}{{ partial "mathjax_support.html" . }}{{ end }}
+
+{{ partial "header-extra.html" . }}
