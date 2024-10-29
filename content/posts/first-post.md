@@ -4,6 +4,8 @@ draft = false
 title = 'First Post'
 
 disable_comments = false
+
+tags = ["test"]
 +++
 
 blog搭建好了, 以后可以愉快的写blog了 :)

@@ -2,45 +2,48 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-        <loc>http://localhost:50403/about/</loc>
+        <loc>https://cafebeef1.github.io/about/</loc>
         <lastmod>2024-10-28T17:49:32+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/</loc>
+        <loc>https://cafebeef1.github.io/</loc>
         <lastmod>2024-10-28T17:49:32+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/c/</loc>
+        <loc>https://cafebeef1.github.io/tags/c/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/cpp/</loc>
+        <loc>https://cafebeef1.github.io/tags/cpp/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/go/</loc>
+        <loc>https://cafebeef1.github.io/tags/go/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/posts/</loc>
+        <loc>https://cafebeef1.github.io/posts/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/programming/</loc>
+        <loc>https://cafebeef1.github.io/tags/programming/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/python/</loc>
+        <loc>https://cafebeef1.github.io/tags/python/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/rust/</loc>
+        <loc>https://cafebeef1.github.io/tags/rust/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/tags/</loc>
+        <loc>https://cafebeef1.github.io/tags/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/posts/test-code/</loc>
+        <loc>https://cafebeef1.github.io/tags/test/</loc>
         <lastmod>2024-10-28T16:04:03+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/posts/test-image/</loc>
+        <loc>https://cafebeef1.github.io/posts/test-code/</loc>
+        <lastmod>2024-10-28T16:04:03+08:00</lastmod>
+      </url><url>
+        <loc>https://cafebeef1.github.io/posts/test-image/</loc>
         <lastmod>2024-10-28T15:21:48+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/posts/first-post/</loc>
+        <loc>https://cafebeef1.github.io/posts/first-post/</loc>
         <lastmod>2024-10-28T13:26:20+08:00</lastmod>
       </url><url>
-        <loc>http://localhost:50403/categories/</loc>
+        <loc>https://cafebeef1.github.io/categories/</loc>
       </url>
 </urlset>

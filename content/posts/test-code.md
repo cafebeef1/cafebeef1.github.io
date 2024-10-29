@@ -8,7 +8,7 @@ description: ""
 author: "cafebeef1@gmail.com"
 type: ""
 image: "/images/熊猫.png"
-tags: ["programming", "C", "CPP", "Go", "Rust", "Python"]
+tags: ["programming", "C", "CPP", "Go", "Rust", "Python", "test"]
 draft: false
 
 toc: true
