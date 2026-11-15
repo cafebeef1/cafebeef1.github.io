@@ -64,11 +64,11 @@ tracepath 10.0.1.20
 
 ## 5. 工业实现
 
-Linux 原生 VXLAN 设备与 Linux Bridge 可以构建简易实验；Open vSwitch 能把隧道端口、MAC 查找和流表策略结合；OVN 负责在逻辑网络和宿主机数据平面之间分发规则。部分云平台利用智能网卡或硬件卸载减轻宿主机 CPU 负担，但不能假设所有云平台均使用 VXLAN。
+[Linux VXLAN 设备](https://docs.kernel.org/networking/vxlan.html) 与 Linux Bridge 可以构建双宿主机实验；[Open vSwitch](https://docs.openvswitch.org/en/latest/) 能通过隧道端口与 OpenFlow 规则实现转发；[OVN](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html) 则负责把逻辑网络配置转换为宿主机数据平面的规则。
 
 ### 可复现的 Linux VXLAN 配置与封装观察
 
-在两台 Underlay 地址分别为 `192.168.1.10`、`192.168.1.20` 的 Linux 主机上，可以用一对固定远端的 VXLAN 设备验证封装逻辑。以下是 Host-A 一侧的关键命令；Host-B 需要交换 `local` 和 `remote`，并把各自的 VXLAN 接口接入对应的 Linux Bridge 与 VM TAP 接口：
+按照 [Linux VXLAN 内核文档](https://docs.kernel.org/networking/vxlan.html)，在两台 Underlay 地址分别为 `192.168.1.10`、`192.168.1.20` 的 Linux 主机上，可以用一对固定远端的 VXLAN 设备验证封装逻辑。以下是 Host-A 一侧的关键命令；Host-B 需要交换 `local` 和 `remote`，并把各自的 VXLAN 接口接入对应的 Linux Bridge 与 VM TAP 接口：
 
 ```bash
 ip link add br-tenant type bridge
@@ -84,9 +84,7 @@ tcpdump -ni eth0 'udp port 4789'
 
 `remote` 是对端 VTEP 的 Underlay IP，`id` 是 VXLAN VNI。用 `tcpdump` 在物理出口观察外层 IP/UDP，再在 VM 内抓包观察内层以太帧，可以区分封装前后的两种视角。固定远端只是小规模实验方式；生产系统通常还需要处理多端点、BUM 流量和地址迁移。
 
-**OVS 的实现层次又不同**：它可以在 `br-int` 上创建 `type=vxlan` 隧道端口，通过流表或 `remote_ip` 选定端点，而不是一定使用上述 Linux VXLAN netdevice。在同一节点上，可用 `ovs-vsctl show`、`ovs-ofctl dump-flows br-int` 与 `ovs-appctl dpif/dump-flows br-int` 分别观察端口、OpenFlow 规则与实际 datapath 缓存；这些输出反映不同层次，不能互相替代。
-
-参考：[Linux VXLAN 配置与 FDB](https://docs.kernel.org/networking/vxlan.html) · [OVS 隧道连接示例](https://docs.openvswitch.org/en/latest/howto/userspace-tunneling/) · [OVS 流表与 datapath 的区别](https://docs.openvswitch.org/en/stable/faq/design/)
+**[OVS 的隧道实现](https://docs.openvswitch.org/en/latest/howto/userspace-tunneling/)** 可以在 `br-int` 上创建 `type=vxlan` 隧道端口，通过流表或 `remote_ip` 选定端点，而不是一定使用上述 Linux VXLAN netdevice。在同一节点上，可用 `ovs-vsctl show`、`ovs-ofctl dump-flows br-int` 与 `ovs-appctl dpif/dump-flows br-int` 分别观察端口、OpenFlow 规则与实际 datapath 缓存；这些命令分别对应网桥端口配置、OpenFlow 规则与 [datapath 流缓存](https://docs.openvswitch.org/en/stable/faq/design/)。
 
 ## 6. 排障经验
 

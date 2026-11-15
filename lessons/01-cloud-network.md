@@ -21,7 +21,7 @@ permalink: /lessons/01-cloud-network/
 
 **Underlay** 是承载宿主机之间通信的物理 IP 网络，负责将报文送到目标宿主机；**Overlay** 是建立在其上的租户逻辑网络，借助 VXLAN、Geneve 等封装把租户二层帧跨三层传送。租户可以看到自己的子网、网关和 MAC 地址，而 Underlay 路由器只需知道宿主机的地址。
 
-以 VXLAN 为例，原始租户以太网帧成为内层载荷，外层 UDP/IP 以源、目的 VTEP 地址标识宿主机。VNI 用于标识逻辑网络。VXLAN 的典型 UDP 目的端口为 4789；具体产品也可能采用其他封装或硬件卸载方式。
+以 VXLAN 为例，原始租户以太网帧成为内层载荷，外层 UDP/IP 以源、目的 VTEP 地址标识宿主机。VNI 用于标识逻辑网络。[RFC 7348](https://www.rfc-editor.org/rfc/rfc7348) 规定的 VXLAN UDP 目的端口是 4789。
 
 ## 3. 控制平面与数据平面的分离
 
@@ -45,7 +45,7 @@ bridge fdb show
 ip rule show
 ```
 
-一个可追踪的开源实现是 **Neutron + OVN + OVS**。Neutron 管理 `network/subnet/port/router` 等 API 对象；OVN Northbound Database 保存逻辑交换机、逻辑路由器与 ACL 等意图；`ovn-northd` 将它们编译为逻辑流并写入 Southbound Database；各宿主机的 `ovn-controller` 读取与本机相关的逻辑信息，把它们转换为 OVS 可执行的 OpenFlow 规则。实际转发报文的是本地数据平面，而不是 Neutron API 服务。
+一个可追踪的开源实现是 **[Neutron](https://docs.openstack.org/neutron/latest/) + [OVN](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html) + [OVS](https://docs.openvswitch.org/en/latest/)**。Neutron 管理 `network/subnet/port/router` 等 API 对象；OVN Northbound Database 保存逻辑交换机、逻辑路由器与 ACL 等意图；`ovn-northd` 将它们编译为逻辑流并写入 Southbound Database；各宿主机的 `ovn-controller` 读取与本机相关的逻辑信息，把它们转换为 OVS 可执行的 OpenFlow 规则。实际转发报文的是本地数据平面，而不是 Neutron API 服务。
 
 因此，“创建子网”与“流量已经按新规则转发”之间存在配置传播过程。可沿以下路径逐层核实：
 
@@ -57,8 +57,6 @@ ovn-sbctl lflow-list           # 编译后的逻辑流
 ovs-vsctl show                 # 本机网桥与端口
 ovs-ofctl dump-flows br-int    # OVS OpenFlow 规则
 ```
-
-这些命令适用于自行部署的 OVN/OVS，不能假设可以在公有云 VM 内访问到宿主机控制面。公有云可能结合软件转发、智能网卡和专用硬件；公开产品 API 并不等于公开了内部具体数据平面实现。
 
 ## 5. 工程取舍与排障思路
 

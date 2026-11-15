@@ -48,11 +48,11 @@ sysctl net.netfilter.nf_conntrack_max
 
 普通路由可以接近无状态地逐包查表，PAT 却必须维护连接状态。流量集中后可能出现端口耗尽、状态表压力和回程路径依赖。若主备切换时未同步 NAT 状态，已有 TCP 连接可能因回程映射丢失而中断。
 
-分布式 NAT 可以扩展处理能力，但需要解决流量分片、双向一致性、状态迁移与故障恢复。无论产品名叫“一个 NAT Gateway”，底层都不必然是一台物理机器。
+分布式 NAT 的关键约束是让同一连接的双向报文命中一致的 NAT 状态，并在节点故障时处理未同步的连接映射。
 
 ## 5. 工业实现对比
 
-Linux 可以用 `SNAT` 或 `MASQUERADE` 实现出站转换：前者适合明确固定出口地址，后者适合动态接口地址。AWS NAT Gateway 是托管式 NAT 服务；阿里云 NAT 网关也提供 SNAT 等能力，但具体公网 IP 绑定、带宽计费和会话限制应以各自产品文档为准。
+Linux 可以用 `SNAT` 或 `MASQUERADE` 实现出站转换：前者适合固定出口地址，后者适合动态接口地址。[AWS NAT Gateway](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) 是托管服务，在公有 NAT Gateway 连接互联网的路径上，Internet Gateway 将 NAT Gateway 的私网地址映射为关联的 EIP。
 
 ```bash
 iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -j MASQUERADE
@@ -61,13 +61,11 @@ iptables -t nat -L -n -v
 
 ### 为什么托管 NAT Gateway 与 Linux MASQUERADE 不能直接画等号
 
-Linux netfilter 的 NAT 借助 conntrack 在一条连接上建立正反方向的地址/端口映射：新建连接在 NAT hook 中匹配规则，后续报文按已建立的映射转换。`MASQUERADE` 适用于出口网卡地址可能变化的场景；地址固定时 `SNAT --to-source` 可以明确指定源 IP。转发主机还需要 `ip_forward=1`、允许 FORWARD、让回包重新经过同一套状态表。`iptables -t nat -L` 只能看规则，观察连接与耗尽风险还得看 `conntrack -L/-S` 和 `nf_conntrack_count/max`。
+[Linux netfilter conntrack](https://docs.kernel.org/networking/nf_conntrack-sysctl.html) 为 NAT 连接维护双向地址/端口映射：新建连接在 NAT hook 中匹配规则，后续报文按已建立的映射转换。`MASQUERADE` 适用于出口网卡地址可能变化的场景；地址固定时 `SNAT --to-source` 可以明确指定源 IP。转发主机还需要 `ip_forward=1`、允许 FORWARD、让回包重新经过同一套状态表。`iptables -t nat -L` 只能看规则，观察连接与耗尽风险还得看 `conntrack -L/-S` 和 `nf_conntrack_count/max`。
 
 **AWS 公有 NAT Gateway 的链路存在两级转换**：私有子网 VM 的源地址先由 NAT Gateway 转换为 NAT Gateway 的**私有 IPv4**，再由 Internet Gateway 映射为 NAT Gateway 绑定的 EIP。公网看到的是 EIP，但不能据此认定 NAT Gateway 内部直接把源地址改为 EIP。跨 AZ 设计时还要注意：NAT Gateway 创建在具体可用区中，多个 AZ 共用同一网关会引入跨区依赖。
 
-高并发时，AWS 提供 `ErrorPortAllocation`（分配出站端口失败）、`PacketsDropCount` 和 `IdleTimeoutCount` 等 CloudWatch 指标。应先区分同一热点目标的端口瓶颈、连接空闲超时、总体 PPS/带宽瓶颈，再决定是增加 NAT 地址、优化连接复用还是调整子网出口拓扑。
-
-参考：[AWS NAT Gateway 内外地址转换](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) · [AWS NAT Gateway 可用区与容量](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html) · [CloudWatch NAT 指标](https://docs.aws.amazon.com/vpc/latest/userguide/metrics-dimensions-nat-gateway.html)
+高并发时，AWS 提供 [`ErrorPortAllocation`、`PacketsDropCount` 和 `IdleTimeoutCount` 等 CloudWatch 指标](https://docs.aws.amazon.com/vpc/latest/userguide/metrics-dimensions-nat-gateway.html)。应先区分同一热点目标的端口瓶颈、连接空闲超时、总体 PPS/带宽瓶颈，再决定是增加 NAT 地址、优化连接复用还是调整子网出口拓扑。
 
 ## 6. 排障经验
 

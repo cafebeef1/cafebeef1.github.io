@@ -36,7 +36,7 @@ Destination     Target
 
 纯二层方案依赖 MAC 学习、ARP/ND 和广播域管理。随着虚拟机数量增长，广播与未知单播扩散、MAC 表容量和跨机迁移都会增加复杂度。
 
-云平台常通过分布式三层网关、ARP 抑制或代理应答减少广播传播。对于虚拟机而言，网关地址可以是固定的逻辑地址；在底层，它可能由多台宿主机协同实现。
+在 [OVN 的逻辑路由器](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html) 实现中，三层网关由逻辑路由器及宿主机上的转发规则共同实现；虚拟机通过逻辑网关地址发送跨子网报文。
 
 ## 4. Linux 中的隔离机制
 
@@ -54,19 +54,17 @@ Network namespace 隔离接口、路由和部分网络协议栈状态；VRF 使�
 
 ## 5. 产业实现对比
 
-AWS VPC、阿里云专有网络 VPC 均向用户暴露私网 CIDR、子网/交换机、路由表和安全策略等概念，但它们对可用区、路由目标、网关资源和默认行为的定义不完全相同。
+[AWS VPC](https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html) 通过 Subnet 和 Route Table 组织网络，[阿里云 VPC](https://help.aliyun.com/zh/vpc/) 使用交换机（vSwitch）定义子网资源。两者都提供 CIDR 规划与安全策略，但网络对象的名称与配置接口不同。
 
 OpenStack Neutron 提供 Network、Subnet、Router 等资源对象；OVN 则将逻辑网络转化为分布式流表。云产品的控制台概念与底层 Linux 对象不是一一对应关系，理解抽象边界比猜测厂商使用哪条内核命令更重要。
 
 ### 路由表如何落地：AWS 与 OVN 的不同层次
 
-在 **AWS VPC** 中，每个子网只能显式关联一张子网路由表；未关联自定义路由表的子网使用 Main Route Table。路由条目由目的 CIDR（或 Prefix List）和目标资源组成，查找遵循最长前缀匹配等 AWS 定义的优先级规则。例如，将 `0.0.0.0/0` 指向 NAT Gateway，改变的是**关联子网的出站路径**，而不是 VM 内的默认网关地址。排查前应先确定 ENI 所在子网、子网关联的路由表、下一跳是否存在且可用。
+按照 [AWS 子网路由表文档](https://docs.aws.amazon.com/vpc/latest/userguide/subnet-route-tables.html)，每个子网只能显式关联一张子网路由表；未关联自定义路由表的子网使用 Main Route Table。路由条目由目的 CIDR（或 Prefix List）和目标资源组成，查找遵循最长前缀匹配等 AWS 定义的优先级规则。例如，将 `0.0.0.0/0` 指向 NAT Gateway，改变的是**关联子网的出站路径**，而不是 VM 内的默认网关地址。排查前应先确定 ENI 所在子网、子网关联的路由表、下一跳是否存在且可用。
 
-在 **OpenStack Neutron + OVN** 中，Neutron `network` 和 `subnet` 负责地址与网络对象，Neutron `port` 代表连接到网络的虚拟接口，`router` 负责连接不同子网。OVN 的逻辑交换机端口、逻辑路由器端口和端点绑定并不等同于 Linux 中固定的一块网卡。跨主机数据转发时，逻辑网络被编译为计算节点上的流表；同一个子网的 VM 即使位于不同宿主机，也不要求把宿主机物理网卡放进租户的 VLAN。
+在 **[OpenStack Neutron + OVN](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html)** 中，Neutron `network` 和 `subnet` 负责地址与网络对象，Neutron `port` 代表连接到网络的虚拟接口，`router` 负责连接不同子网。OVN 的逻辑交换机端口、逻辑路由器端口和端点绑定并不等同于 Linux 中固定的一块网卡。跨主机数据转发时，逻辑网络被编译为计算节点上的流表；同一个子网的 VM 即使位于不同宿主机，也不要求把宿主机物理网卡放进租户的 VLAN。
 
-一个实用的比较方式是分别问：**谁定义网络？谁决定目的地址的逻辑下一跳？哪台宿主机实际执行转发？** AWS 向用户公开前两部分抽象；OVN 自建环境还允许观察第三部分。
-
-参考：[AWS 路由表关联与规则](https://docs.aws.amazon.com/vpc/latest/userguide/RouteTables.html) · [OVN OpenStack 实现与逻辑端口](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html)
+比较两种实现时，可以分别检查**网络对象、逻辑路由和转发规则**：[AWS 路由表](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html) 定义目的网段到网关等目标资源的映射；OVN 则通过 Northbound/Southbound DB 与宿主机 OpenFlow 规则串联配置和转发。
 
 ## 6. 工程经验
 

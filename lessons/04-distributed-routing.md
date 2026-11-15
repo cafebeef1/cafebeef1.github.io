@@ -27,7 +27,7 @@ Host-B → VM-B 10.0.2.20
 
 集中式方案把跨子网流量送到一台或一组路由节点，规则集中、便于观测，但可能产生东西向流量绕行。
 
-分布式方案让宿主机的数据平面执行逻辑网关功能。VM-A 仍然看到 `10.0.1.1`，但实际路由处理可能发生在 Host-A，随后直接把报文封装到 VM-B 所在的 Host-B。
+以 [OVN 分布式逻辑路由器](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html) 为例，Host-A 的数据平面可以执行逻辑网关的转发规则，并将报文发送到 VM-B 所在的 Host-B；VM-A 仍把 `10.0.1.1` 作为逻辑网关。
 
 这意味着“网关 IP 是同一个”并不意味着“所有流量经过同一台机器”。
 
@@ -47,13 +47,13 @@ tcpdump -ni eth0 'host 10.0.2.20'
 
 OVN 使用逻辑路由器表示跨逻辑交换机的三层连接，再将逻辑流水线转换为各宿主机上的转发规则。Linux VRF 和策略路由可提供隔离路由域；eBPF/XDP 也可以承担部分查表与转发工作，但是否在 XDP、TC、OVS 或智能网卡处理，取决于平台架构。
 
-AWS VPC 对用户提供 VPC 本地路由等逻辑能力，用户无需部署一台普通 Linux 路由器来实现同 VPC 子网互通。产品文档定义了可见的路由行为，不等于公开了全部内部数据平面细节。
+[AWS VPC 路由表](https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Route_Tables.html) 包含用于 VPC 内部通信的 `local` 路由，子网间通信不要求用户自行部署 Linux 路由器。
 
 ### 用 OVN 验证一次真实的跨子网逻辑转发
 
 在 OVN 中，逻辑交换机表示二层广播域，逻辑路由器通过路由器端口连接两个逻辑交换机。VM-A 发往 `10.0.2.20` 的报文首先命中对应子网的逻辑网关 MAC，再进入逻辑路由器的入口流水线；经过路由选择后，TTL 减 1，源/目标 MAC 改写为出接口和下一跳对应的 MAC，随后进入目标逻辑交换机流水线。**这里可先完成逻辑三层处理，再在发送宿主机选择远端 chassis/VTEP 并封装**，不需要把包送到一台集中式路由 VM。
 
-OVN 官方 Sandbox 示例使用 `ovn-trace` 模拟一包跨网段流量，可直接观察 `ip.ttl--`、`eth.src`/`eth.dst` 的修改以及最后的逻辑输出端口。这比只看 VM 内的 `ip route` 更接近实际路由机制：
+[OVN Sandbox 官方教程](https://docs.ovn.org/en/stable/tutorials/ovn-sandbox.html) 使用 `ovn-trace` 模拟一包跨网段流量，可直接观察 `ip.ttl--`、`eth.src`/`eth.dst` 的修改以及最后的逻辑输出端口。这比只看 VM 内的 `ip route` 更接近实际路由机制：
 
 ```bash
 # 在已创建逻辑网络的 OVN 实验环境中
@@ -64,8 +64,6 @@ ovs-ofctl dump-flows br-int
 ```
 
 排障时先核实逻辑路由器是否存在正确的路由和端口，再核实源、目的逻辑端口的 chassis 绑定，最后检查宿主机物理网卡上的隧道报文。如果逻辑 trace 能转发而 Underlay 看不到外层包，故障范围通常已缩小至本机流表、端口绑定或隧道出口，而不是 VM 的三层目标 IP。
-
-参考：[OVN Sandbox：跨网段转发与 ovn-trace 示例](https://docs.ovn.org/en/stable/tutorials/ovn-sandbox.html) · [Open vSwitch：流表与 datapath](https://docs.openvswitch.org/en/stable/faq/design/)
 
 ## 5. 设计与故障排查
 
