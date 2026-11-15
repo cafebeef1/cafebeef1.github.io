@@ -27,13 +27,10 @@ permalink: /lessons/01-cloud-network/
 
 云控制平面负责管理租户网络、分配地址、记录虚拟机所在宿主机、计算路由和下发安全策略。数据平面负责按已有规则逐包处理，包括查表、过滤、封装、转发和统计。
 
-```mermaid
-flowchart TB
-    API["用户 API"] --> CTRL["控制平面"]
-    CTRL --> RULES["路由 / 端点 / ACL 规则"]
-    RULES -. "规则下发" .-> DP["OVS / eBPF / 虚拟交换机"]
-    VM["VM"] --> TAP["TAP / vhost"] --> DP --> NIC["物理网卡"]
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/control-data-plane.svg' | relative_url }}" alt="控制平面处理云 API、网络配置、策略编译与规则下发；数据平面由 VM、TAP、虚拟交换机和物理网卡逐包转发">
+  <figcaption>图：控制平面维护和下发规则，数据平面按已安装的规则处理报文。</figcaption>
+</figure>
 
 当 VM 从 Host-A 迁移到 Host-B 时，控制平面需要更新端点位置；如果数据平面仍保留旧映射，报文可能继续被封装到 Host-A。这解释了为什么云网络故障排查必须同时关注**逻辑配置**和**实际生效的转发表**。
 
@@ -48,7 +45,20 @@ bridge fdb show
 ip rule show
 ```
 
-OpenStack Neutron 通过网络、子网、路由器等对象管理租户网络，常与 Open vSwitch、OVN 或 Linux 网络组件配合。OVN 将逻辑交换机和逻辑路由器编译为各宿主机可执行的转发规则。公有云厂商也采用软件转发、硬件卸载和专用网络设备的不同组合，公开的产品抽象不必然暴露内部具体实现。
+一个可追踪的开源实现是 **Neutron + OVN + OVS**。Neutron 管理 `network/subnet/port/router` 等 API 对象；OVN Northbound Database 保存逻辑交换机、逻辑路由器与 ACL 等意图；`ovn-northd` 将它们编译为逻辑流并写入 Southbound Database；各宿主机的 `ovn-controller` 读取与本机相关的逻辑信息，把它们转换为 OVS 可执行的 OpenFlow 规则。实际转发报文的是本地数据平面，而不是 Neutron API 服务。
+
+因此，“创建子网”与“流量已经按新规则转发”之间存在配置传播过程。可沿以下路径逐层核实：
+
+```bash
+# 在安装 OVN/OVS 的对应控制节点或计算节点上执行
+ovn-nbctl show                 # 逻辑网络对象
+ovn-sbctl show                 # 宿主机和逻辑端口绑定
+ovn-sbctl lflow-list           # 编译后的逻辑流
+ovs-vsctl show                 # 本机网桥与端口
+ovs-ofctl dump-flows br-int    # OVS OpenFlow 规则
+```
+
+这些命令适用于自行部署的 OVN/OVS，不能假设可以在公有云 VM 内访问到宿主机控制面。公有云可能结合软件转发、智能网卡和专用硬件；公开产品 API 并不等于公开了内部具体数据平面实现。
 
 ## 5. 工程取舍与排障思路
 
@@ -59,6 +69,8 @@ Overlay 提高了租户网络的独立性，却引入封装头、MTU、端点同
 - [Linux kernel — VRF](https://docs.kernel.org/networking/vrf.html)
 - [Open vSwitch Documentation](https://docs.openvswitch.org/en/latest/)
 - [OpenStack Neutron](https://docs.openstack.org/neutron/latest/)
+- [OVN OpenStack Tutorial：NB/SB DB 与 ovn-controller](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html)
+- [Open vSwitch：OpenFlow 与 datapath 规则区别](https://docs.openvswitch.org/en/stable/faq/design/)
 
 ---
 
