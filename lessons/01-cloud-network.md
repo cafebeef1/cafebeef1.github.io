@@ -16,12 +16,18 @@ permalink: /lessons/01-cloud-network/
 
 ## 2. 两层网络：Underlay 与 Overlay
 
-```text
-租户 A：VM1 ── 逻辑交换机 ── VM2
-           │                  │
-         VTEP-A             VTEP-B
-           │                  │
-Underlay：Host-A ── ToR ── Spine ── ToR ── Host-B
+```mermaid
+flowchart TB
+    subgraph OVERLAY["租户 A · Overlay"]
+        direction LR
+        VM1["VM1"] --- LS["逻辑交换机"] --- VM2["VM2"]
+    end
+    subgraph UNDERLAY["物理网络 · Underlay"]
+        direction LR
+        HA["Host-A / VTEP-A"] --- TORA["ToR-A"] --- SP["Spine"] --- TORB["ToR-B"] --- HB["Host-B / VTEP-B"]
+    end
+    VM1 -. "运行于" .-> HA
+    VM2 -. "运行于" .-> HB
 ```
 
 **Underlay** 是承载宿主机之间通信的物理 IP 网络，负责将报文送到目标宿主机；**Overlay** 是建立在其上的租户逻辑网络，借助 VXLAN、Geneve 等封装把租户二层帧跨三层传送。租户可以看到自己的子网、网关和 MAC 地址，而 Underlay 路由器只需知道宿主机的地址。
@@ -32,10 +38,12 @@ Underlay：Host-A ── ToR ── Spine ── ToR ── Host-B
 
 云控制平面负责管理租户网络、分配地址、记录虚拟机所在宿主机、计算路由和下发安全策略。数据平面负责按已有规则逐包处理，包括查表、过滤、封装、转发和统计。
 
-```text
-用户 API → 控制平面 → 路由/端点/ACL 规则
-                              ↓
-VM → TAP/vhost → OVS/eBPF/虚拟交换机 → 物理网卡
+```mermaid
+flowchart TB
+    API["用户 API"] --> CTRL["控制平面"]
+    CTRL --> RULES["路由 / 端点 / ACL 规则"]
+    RULES -. "规则下发" .-> DP["OVS / eBPF / 虚拟交换机"]
+    VM["VM"] --> TAP["TAP / vhost"] --> DP --> NIC["物理网卡"]
 ```
 
 当 VM 从 Host-A 迁移到 Host-B 时，控制平面需要更新端点位置；如果数据平面仍保留旧映射，报文可能继续被封装到 Host-A。这解释了为什么云网络故障排查必须同时关注**逻辑配置**和**实际生效的转发表**。
