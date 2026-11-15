@@ -14,19 +14,9 @@ permalink: /lessons/01-cloud-network/
 
 ## 2. 两层网络：Underlay 与 Overlay
 
-```mermaid
-flowchart TB
-    subgraph OVERLAY["租户 A · Overlay"]
-        direction LR
-        VM1["VM1"] --- LS["逻辑交换机"] --- VM2["VM2"]
-    end
-    subgraph UNDERLAY["物理网络 · Underlay"]
-        direction LR
-        HA["Host-A / VTEP-A"] --- TORA["ToR-A"] --- SP["Spine"] --- TORB["ToR-B"] --- HB["Host-B / VTEP-B"]
-    end
-    VM1 -. "运行于" .-> HA
-    VM2 -. "运行于" .-> HB
-```
+![Overlay 与 Underlay 分层网络架构]({{ '/assets/diagrams/overlay-underlay.svg' | relative_url }})
+
+*图：VM-A 和 VM-B 的逻辑二层通信由各自宿主机的 VTEP 通过 Underlay 网络承载。*
 
 **Underlay** 是承载宿主机之间通信的物理 IP 网络，负责将报文送到目标宿主机；**Overlay** 是建立在其上的租户逻辑网络，借助 VXLAN、Geneve 等封装把租户二层帧跨三层传送。租户可以看到自己的子网、网关和 MAC 地址，而 Underlay 路由器只需知道宿主机的地址。
 
