@@ -14,9 +14,10 @@ permalink: /lessons/01-cloud-network/
 
 ## 2. 两层网络：Underlay 与 Overlay
 
-![Overlay 与 Underlay 分层网络架构]({{ '/assets/diagrams/overlay-underlay.svg' | relative_url }})
-
-*图：VM-A 和 VM-B 的逻辑二层通信由各自宿主机的 VTEP 通过 Underlay 网络承载。*
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/overlay-underlay.svg' | relative_url }}" alt="Underlay 与 Overlay 分层网络架构：VM-A、VM-B 分别运行于 Host-A、Host-B，通过 VTEP 在物理网络上承载逻辑二层通信">
+  <figcaption>图：VM-A 和 VM-B 的逻辑二层通信由各自宿主机的 VTEP 通过 Underlay 网络承载。</figcaption>
+</figure>
 
 **Underlay** 是承载宿主机之间通信的物理 IP 网络，负责将报文送到目标宿主机；**Overlay** 是建立在其上的租户逻辑网络，借助 VXLAN、Geneve 等封装把租户二层帧跨三层传送。租户可以看到自己的子网、网关和 MAC 地址，而 Underlay 路由器只需知道宿主机的地址。
 
