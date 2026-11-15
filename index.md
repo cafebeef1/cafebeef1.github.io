@@ -1,19 +1,21 @@
 ---
 layout: default
-title: 云网络技术博客
+title: 技术博客
 ---
 
-从 Linux 网络栈与实际报文路径出发，系统分析云网络的核心机制、工业实现与工程取舍。
+关注计算机系统、网络与软件工程中的核心机制、实际实现和工程实践。文章侧重可验证的技术细节、源码与数据路径，以及不同设计方案背后的取舍。
 
-文章围绕 VPC、分布式网关、NAT、网络安全、EIP、LVS 与 Overlay 等主题展开。每篇尽量回答四个问题：**机制为何存在、数据包如何流动、实际系统怎样实现、工程上如何验证与取舍**。
+## 技术专题
 
-[阅读全部技术文章 →]({{ '/lessons/' | relative_url }})
+### 云网络
 
-## 推荐阅读
+从 VPC、Overlay 和分布式路由出发，深入分析 NAT、访问控制、公网出口与四层负载均衡的工作机制和工业实现。
 
-- [VPC 的本质：逻辑隔离、地址空间与数据平面]({{ '/lessons/02-vpc/' | relative_url }})
-- [跨宿主机二层通信：VXLAN 封装与端点发现]({{ '/lessons/03-overlay-path/' | relative_url }})
-- [云 NAT 网关：连接跟踪、端口容量与扩展性]({{ '/lessons/05-nat/' | relative_url }})
+[阅读云网络系列文章 →]({{ '/lessons/' | relative_url }})
+
+## 最近文章
+
 - [四层负载均衡：LVS-NAT、DR 与 TUN 的数据路径]({{ '/lessons/09-lvs/' | relative_url }})
-
-> 本站将厂商公开产品行为与通用技术模型分开描述，避免将单一实现误认为所有云平台的统一架构。
+- [云上公网出口：EIP、Internet Gateway 与 NAT Gateway]({{ '/lessons/08-egress/' | relative_url }})
+- [弹性公网 IP：地址映射、回程路径与故障切换]({{ '/lessons/07-eip/' | relative_url }})
+- [云网络访问控制：安全组、ACL 与有状态防火墙]({{ '/lessons/06-security/' | relative_url }})
