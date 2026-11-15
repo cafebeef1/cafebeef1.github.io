@@ -52,7 +52,7 @@ RS 解封装并处理内层目标为 VIP 的包，响应直接回客户端。与
 
 <figure class="article-figure">
   <img src="{{ '/assets/diagrams/lvs-forwarding-modes.svg' | relative_url }}" alt="LVS NAT 模式请求和响应均经过 Director；DR 模式只修改目标 MAC、响应直接返回；TUN 模式通过 IP-in-IP 隧道传输请求、响应直接返回">
-  <figcaption>橙色实线表示请求方向，黑色虚线表示回包方向。</figcaption>
+  <figcaption>蓝绿实线表示请求方向，灰色虚线表示回包方向。</figcaption>
 </figure>
 
 ## 5. Linux IPVS 配置与观测
