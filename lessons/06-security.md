@@ -12,14 +12,10 @@ permalink: /lessons/06-security/
 
 ## 2. 从一个 TCP SYN 观察过滤过程
 
-```text
-VM-A 10.0.1.10:50000
-  → 源侧出站策略
-  → VPC 路由 / Overlay
-  → 目标子网 ACL
-  → VM-B 入站安全组
-  → VM-B 10.0.2.20:443
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/security-checkpoints.svg' | relative_url }}" alt="跨子网 TCP 流量经过源侧 Security Group、Network ACL、VPC 路由，以及目标侧 Network ACL、Security Group">
+  <figcaption>AWS 跨子网通信中的出站与入站策略检查点。</figcaption>
+</figure>
 
 该示意描述的是源端出站与目标端入站两个方向的策略检查点。
 

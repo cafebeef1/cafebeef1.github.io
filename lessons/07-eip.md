@@ -8,16 +8,10 @@ permalink: /lessons/07-eip/
 
 以 [AWS Elastic IP](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) 为例，EIP 是可独立分配和重新关联的公网 IPv4 地址资源。VM 网卡配置 `10.0.1.10`，公网入口地址为 `203.0.113.10`。
 
-```text
-Internet Client
-  198.51.100.20:50000
-         │
-         ▼
-EIP 203.0.113.10:443
-         │ DNAT
-         ▼
-VM 10.0.1.10:443
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/eip-translation.svg' | relative_url }}" alt="公网客户端经 EIP 和 Internet Gateway 的一对一地址映射访问实例私网 IP，回包执行反向转换">
+  <figcaption>实例使用私网地址收发报文，公网映射由 Internet Gateway 完成。</figcaption>
+</figure>
 
 这里使用 RFC 5737 的文档示例地址，不能作为真实公网服务地址。
 

@@ -8,15 +8,10 @@ permalink: /lessons/09-lvs/
 
 四层负载均衡对外暴露 VIP（Virtual IP），后端由多个 Real Server（RS）组成。客户端只知道 VIP，Director 根据调度算法为新连接选择 RS。
 
-```text
-Client 198.51.100.10:50000
-         │
-         ▼
-VIP 203.0.113.100:443
-         │ Director / IPVS
-         ├── RS1 10.0.1.11:443
-         └── RS2 10.0.1.12:443
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/lvs-architecture.svg' | relative_url }}" alt="客户端访问 VIP，IPVS Director 为连接选择 Real Server">
+  <figcaption>Director 根据调度算法将新连接分配至其中一个 Real Server。</figcaption>
+</figure>
 
 [LVS（Linux Virtual Server）](https://www.linuxvirtualserver.org/) 中的 IPVS 是 Linux 内核四层负载均衡实现。它与 Nginx 等七层反向代理不同：经典 IPVS 主要根据 L3/L4 信息处理报文，而不是解析 HTTP URL 后决定后端。
 
@@ -30,10 +25,7 @@ VIP 203.0.113.100:443
 
 Director 选择 RS1 后，将目的地址改为 `10.0.1.11`；RS1 的响应必须经过 Director，后者将源地址改回 VIP。连接两侧观察到的地址不同，但 TCP 会话保持一致。
 
-```text
-Client → Director(DNAT) → RS1
-Client ← Director(SNAT) ← RS1
-```
+
 
 NAT 模式部署相对直观，但 Director 承担请求与响应双向流量。后端默认网关或回程路由若绕过 Director，连接可能失败。
 
@@ -41,10 +33,7 @@ NAT 模式部署相对直观，但 Director 承担请求与响应双向流量。
 
 DR（Direct Routing）模式保留原始目的 IP=VIP，只在二层将帧转交给选中的 RS。RS 必须把 VIP 视为本机地址，通常在 loopback 上配置 VIP，并避免与 Director 发生 ARP 冲突。
 
-```text
-Client → Director ──(改目标 MAC)──→ RS1
-Client ←────────────────────────── RS1
-```
+
 
 RS1 直接以 VIP 作为源 IP 返回客户端，响应不经过 Director。经典 DR 要求 Director 与 RS 之间具有合适的二层可达条件，因此不适合直接跨任意三层网络转发。
 
@@ -64,6 +53,11 @@ RS 解封装并处理内层目标为 VIP 的包，响应直接回客户端。与
 | NAT | 经 Director | 经 Director | 双向带宽与状态压力 |
 | DR | 经 Director，改 MAC | RS 直接返回 | 二层可达、VIP/ARP 配置 |
 | TUN | 经 Director，隧道封装 | RS 直接返回 | 隧道配置与封装开销 |
+
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/lvs-forwarding-modes.svg' | relative_url }}" alt="LVS NAT 模式请求和响应均经过 Director；DR 模式只修改目标 MAC、响应直接返回；TUN 模式通过 IP-in-IP 隧道传输请求、响应直接返回">
+  <figcaption>橙色实线表示请求方向，黑色虚线表示回包方向。</figcaption>
+</figure>
 
 ## 5. Linux IPVS 配置与观测
 

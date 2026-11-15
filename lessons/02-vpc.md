@@ -10,11 +10,10 @@ VPC（Virtual Private Cloud）是云平台提供的**逻辑网络边界**。它�
 
 例如两个租户都配置 `10.0.0.0/16`，其 IP 地址可以重叠：
 
-```text
-VPC-A / Tenant-A         VPC-B / Tenant-B
-10.0.0.0/16              10.0.0.0/16
-  └ VM 10.0.1.10           └ VM 10.0.1.10
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/vpc-isolation.svg' | relative_url }}" alt="VPC A 与 VPC B 相互隔离，均包含地址为 10.0.1.10 的虚拟机">
+  <figcaption>两套逻辑 VPC 可以使用相同的私网 CIDR 与主机地址。</figcaption>
+</figure>
 
 云平台在查找路由和端点时不仅使用目的 IP，还需要识别该流量所属的租户或逻辑网络上下文。因此两个完全相同的目的地址，可以被转发到不同的虚拟机。
 

@@ -14,14 +14,10 @@ permalink: /lessons/08-egress/
 2. **VPC 路由与出口策略**：决定逻辑网关后续如何处理。
 3. **公网地址转换**：决定公网服务器看到哪个源 IP。
 
-```text
-VM 10.0.1.10
-   │ Linux: default via 10.0.1.1
-   ▼
-云平台 VPC 出口决策
-   ├── EIP 公网出口 → 203.0.113.10
-   └── NAT Gateway   → 203.0.113.20
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/internet-egress.svg' | relative_url }}" alt="AWS 公有子网实例通过 Internet Gateway 和实例公有地址访问互联网，私有子网实例通过 NAT Gateway 再经 Internet Gateway 出站">
+  <figcaption>AWS 公有子网直连 IGW 与私有子网经 NAT Gateway 出站的两条路径。</figcaption>
+</figure>
 
 这只是帮助理解的逻辑示意。真实云平台未必允许在同一实例上自由组合两种路径。
 

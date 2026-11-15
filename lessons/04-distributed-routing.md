@@ -8,18 +8,10 @@ permalink: /lessons/04-distributed-routing/
 
 假设 VM-A 为 `10.0.1.10/24`，VM-B 为 `10.0.2.20/24`，属于同一个 VPC。VM-A 发现目的 IP 不在直连子网，因而把报文交给默认网关 `10.0.1.1`。
 
-```text
-VM-A 10.0.1.10
-   │ 目标 IP 仍是 10.0.2.20
-   │ 目标 MAC = 默认网关 MAC
-   ▼
-Host-A 分布式三层网关
-   │ 路由查表、TTL - 1、二层重写
-   ▼
-Overlay / Underlay
-   ▼
-Host-B → VM-B 10.0.2.20
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/distributed-routing.svg' | relative_url }}" alt="跨子网的 VM-A 经 Host-A 的分布式逻辑网关转发，使用隧道到达 Host-B 的 VM-B">
+  <figcaption>跨子网转发：逻辑网关改写二层头、递减 TTL，但不改写三层目的 IP。</figcaption>
+</figure>
 
 路由器处理的是三层目的地址，**不会把目标 IP 改写为网关 IP**。只有发生 DNAT 等地址转换时，IP 目的地址才会变化。每经过一次三层路由，TTL/Hop Limit 会减少；出站链路使用新的二层封装。
 

@@ -8,11 +8,10 @@ permalink: /lessons/05-nat/
 
 云上私有子网中的虚拟机通常使用 RFC 1918 地址，不能直接以这些地址作为公网通信的可路由源地址。出站 NAT Gateway 在公网出口执行源地址转换（SNAT），使多台私网实例共享一个或多个公网 IPv4 地址。
 
-```text
-VM-A 10.0.1.10:50000 ─┐
-                      ├→ NAT Gateway 203.0.113.20 → Internet
-VM-B 10.0.1.11:50000 ─┘
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/nat-gateway.svg' | relative_url }}" alt="两个私网虚拟机经 NAT Gateway 的 SNAT 共享公网 IP 访问互联网">
+  <figcaption>两个不同内部连接通过 NAT Gateway 的地址、端口映射共享出口。</figcaption>
+</figure>
 
 典型 PAT（Port Address Translation）还会改写源端口，以便区分连接。它与简单的一对一静态 NAT 不同，通常需要逐连接状态。
 

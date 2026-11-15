@@ -8,18 +8,10 @@ permalink: /lessons/03-overlay-path/
 
 设 VM-A 为 `10.0.1.10/24`，位于 Host-A（`192.168.1.10`）；VM-B 为 `10.0.1.20/24`，位于 Host-B（`192.168.1.20`）。两台 VM 在逻辑上属于同一二层子网，但宿主机之间可能隔着多台三层交换机。
 
-```mermaid
-flowchart LR
-    subgraph A["宿主机 A · 192.168.1.10"]
-        direction TB
-        VA["VM-A · 10.0.1.10"] --> TA["VTEP-A"]
-    end
-    subgraph B["宿主机 B · 192.168.1.20"]
-        direction TB
-        TB["VTEP-B"] --> VB["VM-B · 10.0.1.20"]
-    end
-    TA -- "VXLAN over Underlay" --> TB
-```
+<figure class="article-figure">
+  <img src="{{ '/assets/diagrams/vxlan-encapsulation.svg' | relative_url }}" alt="VM-A 经 Host-A 的 VTEP 封装 VXLAN 报文，穿过 Underlay 网络，由 Host-B 的 VTEP 解封装后到达 VM-B">
+  <figcaption>跨宿主机通信：内层私网 IP 不变，Underlay 转发外层 VTEP IP。</figcaption>
+</figure>
 
 VM-A 查找路由后认为目的地址“直连”，因此会尝试解析 VM-B 的 MAC，而不是把报文发送到默认网关。ARP 请求可能被宿主机转发、代理应答，或由控制平面提供的端点信息处理。
 
