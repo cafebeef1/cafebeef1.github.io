@@ -25,15 +25,11 @@ permalink: /lessons/09-lvs/
 
 Director 选择 RS1 后，将目的地址改为 `10.0.1.11`；RS1 的响应必须经过 Director，后者将源地址改回 VIP。连接两侧观察到的地址不同，但 TCP 会话保持一致。
 
-
-
 NAT 模式部署相对直观，但 Director 承担请求与响应双向流量。后端默认网关或回程路由若绕过 Director，连接可能失败。
 
 ## 3. LVS-DR：只改目标 MAC
 
 DR（Direct Routing）模式保留原始目的 IP=VIP，只在二层将帧转交给选中的 RS。RS 必须把 VIP 视为本机地址，通常在 loopback 上配置 VIP，并避免与 Director 发生 ARP 冲突。
-
-
 
 RS1 直接以 VIP 作为源 IP 返回客户端，响应不经过 Director。经典 DR 要求 Director 与 RS 之间具有合适的二层可达条件，因此不适合直接跨任意三层网络转发。
 
