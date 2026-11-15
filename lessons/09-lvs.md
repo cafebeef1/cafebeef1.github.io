@@ -4,8 +4,6 @@ title: "四层负载均衡：LVS-NAT、DR 与 TUN 的数据路径"
 permalink: /lessons/09-lvs/
 ---
 
-> 本文围绕可验证的网络机制与工程实现展开。文中地址为教学示例，具体云产品行为应以官方文档和实际配置为准。
-
 ## 1. VIP 与 Real Server 之间的抽象
 
 四层负载均衡对外暴露 VIP（Virtual IP），后端由多个 Real Server（RS）组成。客户端只知道 VIP，Director 根据调度算法为新连接选择 RS。

@@ -4,8 +4,6 @@ title: "云上公网出口：EIP、Internet Gateway 与 NAT Gateway"
 permalink: /lessons/08-egress/
 ---
 
-> 本文围绕可验证的网络机制与工程实现展开。文中地址为教学示例，具体云产品行为应以官方文档和实际配置为准。
-
 ## 1. 一个容易混淆的问题
 
 某台 VM 已关联 EIP，但所在子网的默认路由又指向 NAT Gateway，它访问公网时会使用哪个地址？
