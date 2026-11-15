@@ -44,6 +44,16 @@ AWS Security Group 采用有状态规则模型，Network ACL 采用无状态规�
 
 在开源领域，OVN 的 ACL 可以在逻辑交换机/路由器流水线中表达访问策略，Open vSwitch 的 conntrack action 可以与流表结合实现有状态处理；eBPF 也可用于实现高性能过滤和可观测性。
 
+### AWS 规则匹配与 OVN 流水线的具体差别
+
+在 AWS 中，安全组关联 ENI，规则以允许为主，已建立连接的返回流量通常由连接跟踪放行；一个 ENI 可关联多个安全组，其允许规则共同生效。Network ACL 与子网关联，入站、出站分别按**从小到大的规则编号**匹配，命中后停止，支持显式拒绝，且不会记住连接状态。因此只开放服务端 TCP 443 不够：若回程的无状态 NACL 未允许客户端临时端口，SYN-ACK 仍可能被丢弃。
+
+OVN 则把 ACL 表达为逻辑交换机/逻辑路由器流水线中的匹配与动作，并可结合 OVS conntrack 执行有状态过滤。在自建环境里，可以先用 `ovn-nbctl acl-list <switch>` 核实逻辑策略，再用 `ovn-trace` 模拟给定五元组是否命中某条规则，最后查 OVS 实际流表，区分“逻辑策略错误”和“规则尚未同步到数据平面”。
+
+在 AWS 上，`VPC Flow Logs` 可提供 ENI 流量的 `ACCEPT/REJECT` 等记录，`Reachability Analyzer` 能分析由 VPC 配置定义的虚拟可达路径；两者都不等于实时完整抓包，也不能单独证明应用正在监听。排障仍需结合 VM 内的 TCP 抓包、监听端口和应用日志。
+
+参考：[AWS NACL 的匹配顺序与无状态行为](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-network-acls.html) · [VPC Flow Logs](https://docs.aws.amazon.com/vpc/latest/userguide/flow-logs.html) · [Reachability Analyzer](https://docs.aws.amazon.com/vpc/latest/userguide/monitoring.html) · [OVN 逻辑转发排查](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html)
+
 ## 5. 排障方法：从抓包现象缩小范围
 
 ```bash

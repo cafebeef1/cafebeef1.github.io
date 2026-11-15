@@ -81,9 +81,27 @@ ipvsadm -Lnc
 
 ## 6. 工业实践与高可用
 
-Keepalived 常将健康检查与 VRRP 主备切换用于 LVS 部署；但 VRRP 解决 VIP/Director 可达性，并不自动迁移后端 TCP Socket 状态。Kubernetes 的 kube-proxy 曾广泛使用 IPVS 模式，现代实现也存在 iptables、nftables 或 eBPF 等路线。云厂商的托管四层负载均衡可能使用分布式数据平面、硬件卸载或 DSR，不能把产品实现直接等同于经典 LVS。
+Keepalived 常将健康检查与 VRRP 主备切换用于 LVS 部署；但 VRRP 解决 VIP/Director 可达性，并不自动迁移后端 TCP Socket 状态。Kubernetes 的 kube-proxy 曾提供 IPVS 模式，已于 Kubernetes v1.35 标记为弃用，官方建议评估 nftables 模式。其他云平台还可能采用自研分布式数据平面、硬件卸载或 DSR。云厂商的托管四层负载均衡可能使用分布式数据平面、硬件卸载或 DSR，不能把产品实现直接等同于经典 LVS。
 
 当响应远大于请求时，DR/TUN 的直接返回可显著降低 Director 出站带宽压力；但故障排查必须注意请求和响应走不同路径，不能仅在 Director 上抓包验证完整 TCP 往返。
+
+### 连接调度、转发表与故障转移的边界
+
+IPVS 的职责不是“每包重新选一个 RS”。以 TCP 为例，新连接到来时按 `rr`、`wrr`、`lc` 等调度器选择 Real Server，然后在内核 IPVS 连接表中记录关联；同一连接的后续包根据已有条目转发。与仅观察虚拟服务配置的 `ipvsadm -Ln` 不同，`ipvsadm -Lnc` 可查看当前 IPVS 连接项，`ipvsadm -Ln --stats`/`--rate` 可用于对比 RS 方向的包数与速率。
+
+```bash
+ipvsadm -Ln              # VIP、调度算法、RS 与转发模式
+ipvsadm -Lnc             # 当前连接和选定的 RS
+ipvsadm -Ln --stats      # 连接数及流量统计
+ipvsadm -Ln --rate       # 当前速率
+cat /proc/net/ip_vs      # 内核导出的虚拟服务表
+```
+
+Keepalived 的两类功能需要分开理解：**健康检查/LVS 配置**根据后端探测结果增删 RS，**VRRP** 在 Director 节点故障时转移 VIP。两者配合可以恢复新连接，但主备切换并不自动保证旧 TCP 流量继续可用；还涉及 IPVS 状态同步、邻居缓存刷新以及后端业务自身的连接状态。
+
+此外，**Linux IPVS 与 Kubernetes Service 的 IPVS kube-proxy 后端不是同一项产品决策**。Kubernetes 官方已在 v1.35 将 `ipvs` 代理模式标记为弃用，建议评估 `nftables` 模式；这不代表 Linux 内核 IPVS 或经典 LVS-DR/TUN 技术被弃用。
+
+参考：[Keepalived 文档](https://www.keepalived.org/doc/) · [Kubernetes Service Proxy 模式与 IPVS 弃用说明](https://kubernetes.io/docs/reference/networking/virtual-ips/)
 
 ## 参考资料
 - [Linux Virtual Server Project](http://www.linuxvirtualserver.org/)

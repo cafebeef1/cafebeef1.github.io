@@ -49,6 +49,18 @@ AWS VPC 的典型公有子网通过 `0.0.0.0/0 → Internet Gateway` 提供公�
 
 **EIP 本身不是 AWS VPC 路由表中的下一跳目标**。其他云厂商可能通过不同的产品抽象提供公网出站能力，不能直接套用 AWS 路由对象。
 
+### 把 AWS 的两条公网路径画成具体的地址转换链
+
+**公有子网实例直接出站：** 实例私网 IP → 子网路由表 `0.0.0.0/0 → IGW` → IGW 对实例关联的公有 IPv4/EIP 执行映射 → Internet。EIP 并不是一个可单独填写进 VPC 路由表的网关目标。
+
+**私有子网通过公有 NAT Gateway 出站：** VM 私网 IP → 私有子网路由表 `0.0.0.0/0 → NAT Gateway` → NAT Gateway 将源地址转换成自己的私网 IP/端口 → NAT 所在公有子网的 `0.0.0.0/0 → IGW` → IGW 将 NAT 的私网 IP 映射为 NAT EIP → Internet。两条路径的源地址最终不同，回程也须返回对应的映射与连接状态。
+
+这种分层也说明一项常见误判：**NAT Gateway 绑定 EIP，并不等于可以跳过 Internet Gateway**。在 AWS 公有 NAT Gateway 通往互联网的场景中，IGW 仍是公网出口必需的一环。AWS 私有 NAT Gateway 则不绑定 EIP，用于到其他 VPC 或本地网络等路径；不能把所有名为 NAT Gateway 的服务都默认视为公网网关。
+
+在多可用区部署时，应核对每个私有子网关联的是哪个 NAT Gateway 以及网关所在 AZ，避免无意间形成跨 AZ 出站的单点依赖。
+
+参考：[AWS NAT Gateway：公有/私有模型和双重地址映射](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) · [AWS NAT Gateway 的 AZ 与容量](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html)
+
 ## 4. 出站地址怎么验证
 
 ```bash

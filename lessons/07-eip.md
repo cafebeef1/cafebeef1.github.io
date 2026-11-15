@@ -69,6 +69,22 @@ AWS Elastic IP 可与特定资源关联，Amazon VPC 的 Internet Gateway 在典
 
 EIP 重新绑定到新 VM 后，新的连接可以使用相同公网地址；**已有 TCP 连接通常不能仅靠迁移 EIP 自动延续**，因为新 VM 缺少旧连接的 Socket、序列号和应用状态。高可用通常还需健康检查、流量切换和应用状态管理。
 
+### 从 EC2 的 ENI 绑定关系看 EIP
+
+在 AWS EC2 中，EIP 是 Region 范围内分配的公网 IPv4 资源。一个 EIP 可关联实例或网络接口上的特定**私有 IPv4 地址**；VPC 的 Internet Gateway 为典型公有 IPv4 流量提供一对一映射。也就是说，实例内部依然只看到私网地址，外部访问时才由 VPC 网络层处理公网映射。这也是为什么不能仅凭 `ip addr` 判断 EIP 是否绑定正确。
+
+定位 EIP 故障时，建议依次确认 **EIP allocation → association → ENI/private IP → 子网路由表的 IGW 路径 → 安全组/NACL → 应用监听**。以下查询适用于有 AWS CLI 权限的环境，不会修改地址：
+
+```bash
+aws ec2 describe-addresses --query \
+  'Addresses[].{EIP:PublicIp,PrivateIP:PrivateIpAddress,ENI:NetworkInterfaceId,Assoc:AssociationId}'
+aws ec2 describe-network-interfaces --network-interface-ids eni-xxxxxxxx
+```
+
+重新关联 EIP 可以把新连接导向新的目标，但连接跟踪、旧 VM Socket、应用内存状态不会因为地址重新关联而自动迁移。AWS 文档也建议在重新关联前妥善处理活动连接；做高可用时，应单独设计连接重试、会话保持与服务就绪判定。
+
+参考：[AWS EIP 分配与重关联](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) · [管理 ENI 私网地址和 EIP 关联](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/managing-network-interface-ip-addresses.html)
+
 ## 6. 工程经验
 
 不要把“EIP 稳定”与“服务无中断”画等号。设计故障切换时，应区分地址可达性恢复、路由收敛、连接恢复和应用可用性四个时间尺度。

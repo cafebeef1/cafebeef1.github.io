@@ -58,6 +58,16 @@ AWS VPC、阿里云专有网络 VPC 均向用户暴露私网 CIDR、子网/交�
 
 OpenStack Neutron 提供 Network、Subnet、Router 等资源对象；OVN 则将逻辑网络转化为分布式流表。云产品的控制台概念与底层 Linux 对象不是一一对应关系，理解抽象边界比猜测厂商使用哪条内核命令更重要。
 
+### 路由表如何落地：AWS 与 OVN 的不同层次
+
+在 **AWS VPC** 中，每个子网只能显式关联一张子网路由表；未关联自定义路由表的子网使用 Main Route Table。路由条目由目的 CIDR（或 Prefix List）和目标资源组成，查找遵循最长前缀匹配等 AWS 定义的优先级规则。例如，将 `0.0.0.0/0` 指向 NAT Gateway，改变的是**关联子网的出站路径**，而不是 VM 内的默认网关地址。排查前应先确定 ENI 所在子网、子网关联的路由表、下一跳是否存在且可用。
+
+在 **OpenStack Neutron + OVN** 中，Neutron `network` 和 `subnet` 负责地址与网络对象，Neutron `port` 代表连接到网络的虚拟接口，`router` 负责连接不同子网。OVN 的逻辑交换机端口、逻辑路由器端口和端点绑定并不等同于 Linux 中固定的一块网卡。跨主机数据转发时，逻辑网络被编译为计算节点上的流表；同一个子网的 VM 即使位于不同宿主机，也不要求把宿主机物理网卡放进租户的 VLAN。
+
+一个实用的比较方式是分别问：**谁定义网络？谁决定目的地址的逻辑下一跳？哪台宿主机实际执行转发？** AWS 向用户公开前两部分抽象；OVN 自建环境还允许观察第三部分。
+
+参考：[AWS 路由表关联与规则](https://docs.aws.amazon.com/vpc/latest/userguide/RouteTables.html) · [OVN OpenStack 实现与逻辑端口](https://docs.ovn.org/en/stable/tutorials/ovn-openstack.html)
+
 ## 6. 工程经验
 
 规划 VPC 时，应预留地址空间并提前考虑 VPC Peering、VPN、专线和跨云互联的 CIDR 冲突。**VPC 内允许重叠地址**不代表两个重叠地址空间能够无障碍互联；一旦需要路由互通，地址冲突就会成为实际限制。

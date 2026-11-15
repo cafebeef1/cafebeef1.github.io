@@ -49,6 +49,24 @@ OVN 使用逻辑路由器表示跨逻辑交换机的三层连接，再将逻辑�
 
 AWS VPC 对用户提供 VPC 本地路由等逻辑能力，用户无需部署一台普通 Linux 路由器来实现同 VPC 子网互通。产品文档定义了可见的路由行为，不等于公开了全部内部数据平面细节。
 
+### 用 OVN 验证一次真实的跨子网逻辑转发
+
+在 OVN 中，逻辑交换机表示二层广播域，逻辑路由器通过路由器端口连接两个逻辑交换机。VM-A 发往 `10.0.2.20` 的报文首先命中对应子网的逻辑网关 MAC，再进入逻辑路由器的入口流水线；经过路由选择后，TTL 减 1，源/目标 MAC 改写为出接口和下一跳对应的 MAC，随后进入目标逻辑交换机流水线。**这里可先完成逻辑三层处理，再在发送宿主机选择远端 chassis/VTEP 并封装**，不需要把包送到一台集中式路由 VM。
+
+OVN 官方 Sandbox 示例使用 `ovn-trace` 模拟一包跨网段流量，可直接观察 `ip.ttl--`、`eth.src`/`eth.dst` 的修改以及最后的逻辑输出端口。这比只看 VM 内的 `ip route` 更接近实际路由机制：
+
+```bash
+# 在已创建逻辑网络的 OVN 实验环境中
+ovn-nbctl show
+ovn-sbctl lflow-list
+ovn-trace --help
+ovs-ofctl dump-flows br-int
+```
+
+排障时先核实逻辑路由器是否存在正确的路由和端口，再核实源、目的逻辑端口的 chassis 绑定，最后检查宿主机物理网卡上的隧道报文。如果逻辑 trace 能转发而 Underlay 看不到外层包，故障范围通常已缩小至本机流表、端口绑定或隧道出口，而不是 VM 的三层目标 IP。
+
+参考：[OVN Sandbox：跨网段转发与 ovn-trace 示例](https://docs.ovn.org/en/stable/tutorials/ovn-sandbox.html) · [Open vSwitch：流表与 datapath](https://docs.openvswitch.org/en/stable/faq/design/)
+
 ## 5. 设计与故障排查
 
 分布式路由的优势是减少跨宿主机流量绕行；挑战是规则一致性、端点迁移、连接状态以及可观测性。排障时应分别检查 VM 路由、VPC 路由与策略、端点定位、隧道封装和回程路径，避免把所有丢包都归因于默认网关。

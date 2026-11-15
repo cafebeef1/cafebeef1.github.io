@@ -59,6 +59,16 @@ iptables -t nat -A POSTROUTING -s 10.0.0.0/16 -o eth0 -j MASQUERADE
 iptables -t nat -L -n -v
 ```
 
+### 为什么托管 NAT Gateway 与 Linux MASQUERADE 不能直接画等号
+
+Linux netfilter 的 NAT 借助 conntrack 在一条连接上建立正反方向的地址/端口映射：新建连接在 NAT hook 中匹配规则，后续报文按已建立的映射转换。`MASQUERADE` 适用于出口网卡地址可能变化的场景；地址固定时 `SNAT --to-source` 可以明确指定源 IP。转发主机还需要 `ip_forward=1`、允许 FORWARD、让回包重新经过同一套状态表。`iptables -t nat -L` 只能看规则，观察连接与耗尽风险还得看 `conntrack -L/-S` 和 `nf_conntrack_count/max`。
+
+**AWS 公有 NAT Gateway 的链路存在两级转换**：私有子网 VM 的源地址先由 NAT Gateway 转换为 NAT Gateway 的**私有 IPv4**，再由 Internet Gateway 映射为 NAT Gateway 绑定的 EIP。公网看到的是 EIP，但不能据此认定 NAT Gateway 内部直接把源地址改为 EIP。跨 AZ 设计时还要注意：NAT Gateway 创建在具体可用区中，多个 AZ 共用同一网关会引入跨区依赖。
+
+高并发时，AWS 提供 `ErrorPortAllocation`（分配出站端口失败）、`PacketsDropCount` 和 `IdleTimeoutCount` 等 CloudWatch 指标。应先区分同一热点目标的端口瓶颈、连接空闲超时、总体 PPS/带宽瓶颈，再决定是增加 NAT 地址、优化连接复用还是调整子网出口拓扑。
+
+参考：[AWS NAT Gateway 内外地址转换](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html) · [AWS NAT Gateway 可用区与容量](https://docs.aws.amazon.com/vpc/latest/userguide/nat-gateway-basics.html) · [CloudWatch NAT 指标](https://docs.aws.amazon.com/vpc/latest/userguide/metrics-dimensions-nat-gateway.html)
+
 ## 6. 排障经验
 
 当 TCP 连接偶发超时且高峰期明显加重，应同时看 NAT 端口分配失败、conntrack 表、出口带宽和 SYN 重传。抓包应覆盖 NAT 前后两侧，重点比对源地址、源端口与回程是否对称。
