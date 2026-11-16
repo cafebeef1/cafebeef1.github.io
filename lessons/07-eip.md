@@ -2,6 +2,11 @@
 layout: default
 title: "弹性公网 IP：地址映射、回程路径与故障切换"
 permalink: /lessons/07-eip/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "EIP 的地址映射、回程路径和故障切换。"
 ---
 
 ## 1. EIP 是地址资源，不必是 VM 网卡地址

@@ -2,6 +2,11 @@
 layout: default
 title: "云上公网出口：EIP、Internet Gateway 与 NAT Gateway"
 permalink: /lessons/08-egress/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "Internet Gateway、EIP 与 NAT Gateway 的出口转发。"
 ---
 
 ## 1. 一个容易混淆的问题

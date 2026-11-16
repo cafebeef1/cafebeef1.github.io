@@ -1,6 +1,8 @@
 ---
 layout: default
-title: 文章目录
+title: 技术 · 文章目录
+section: tech
+section_name: TECH / ENGINEERING
 permalink: /lessons/
 ---
 

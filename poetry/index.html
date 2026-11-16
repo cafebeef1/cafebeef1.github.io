@@ -1,0 +1,32 @@
+---
+layout: default
+section: poetry
+section_name: POETRY / COLLECTION
+title: 诗词
+permalink: /poetry/
+description: "从作者、朝代、体裁与题材出发，探索古典诗词。"
+---
+<p class="poetry-intro">读千古文章，见万里山河。</p>
+<p>山水有情，文字有意。从一首诗、一阕词开始，慢慢建立自己的诗词地图。作品可按作者、朝代、体裁和题材自由筛选，后续持续收录更多诗人。</p>
+{% assign poems = site.pages | where: "kind", "poem" | sort: "order" %}
+{% assign authors = poems | map: "author" | uniq | sort %}
+{% assign dynasties = poems | map: "dynasty" | uniq | sort %}
+{% assign forms = poems | map: "form" | uniq | sort %}
+{% capture all_themes %}{% for poem in poems %}{% for item in poem.themes %}{{ item }}|{% endfor %}{% endfor %}{% endcapture %}
+{% assign themes = all_themes | split: "|" | uniq | sort %}
+<div class="poetry-controls" aria-label="筛选诗词">
+  <div class="poetry-control"><label for="filter-author">作者</label><select id="filter-author" data-poetry-filter="author"><option value="">全部作者</option>{% for item in authors %}<option value="{{ item | escape }}">{{ item }}</option>{% endfor %}</select></div>
+  <div class="poetry-control"><label for="filter-dynasty">朝代</label><select id="filter-dynasty" data-poetry-filter="dynasty"><option value="">全部朝代</option>{% for item in dynasties %}<option value="{{ item | escape }}">{{ item }}</option>{% endfor %}</select></div>
+  <div class="poetry-control"><label for="filter-form">体裁</label><select id="filter-form" data-poetry-filter="form"><option value="">全部体裁</option>{% for item in forms %}<option value="{{ item | escape }}">{{ item }}</option>{% endfor %}</select></div>
+  <div class="poetry-control"><label for="filter-theme">题材</label><select id="filter-theme" data-poetry-filter="theme"><option value="">全部题材</option>{% for item in themes %}<option value="{{ item | escape }}">{{ item }}</option>{% endfor %}</select></div>
+</div>
+<p class="poetry-counter" data-poetry-count>共 {{ poems.size }} 首作品</p>
+<div class="poem-grid">
+{% for poem in poems %}
+  <a class="poem-card" href="{{ poem.url | relative_url }}" data-poem-card data-author="{{ poem.author | escape }}" data-dynasty="{{ poem.dynasty | escape }}" data-form="{{ poem.form | escape }}" data-themes="{{ poem.themes | join: '|' | escape }}">
+    <img src="{{ poem.cover | relative_url }}" alt="{{ poem.cover_alt | escape }}" loading="lazy">
+    <div class="poem-card-body"><span class="eyebrow">{{ poem.dynasty }} · {{ poem.form }} · {{ poem.author }}</span><h2>{{ poem.title }}</h2><p>{{ poem.excerpt }}</p><small>{{ poem.themes | join: " / " }}</small></div>
+  </a>
+{% endfor %}
+</div>
+<p class="poetry-empty" data-poetry-empty hidden>当前筛选下没有作品，试试调整筛选条件。</p>

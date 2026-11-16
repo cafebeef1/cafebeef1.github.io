@@ -1,0 +1,19 @@
+---
+layout: default
+section: archive
+section_name: ARCHIVE / ALL NOTES
+title: 归档
+permalink: /archive/
+---
+<p>技术文章与诗词作品按最近更新日期汇集于此。每一次阅读、实践与记录，都有自己的位置。</p>
+{% assign updates = site.pages | where: "show_in_updates", true | sort: "updated" | reverse %}
+<div class="updates-list">
+{% for item in updates %}
+  <a class="update-row" href="{{ item.url | relative_url }}">
+    <time datetime="{{ item.updated | date: '%Y-%m-%d' }}">{{ item.updated | date: "%Y.%m.%d" }}</time>
+    <span class="update-type">{% if item.kind == 'poem' %}诗词{% else %}技术{% endif %}</span>
+    <span class="update-info"><span class="update-title">{{ item.title }}</span><span class="update-summary">{{ item.summary | default: item.excerpt }}</span></span>
+    <span class="update-arrow" aria-hidden="true">↗</span>
+  </a>
+{% endfor %}
+</div>

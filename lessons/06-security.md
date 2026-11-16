@@ -2,6 +2,11 @@
 layout: default
 title: "云网络访问控制：安全组、ACL 与有状态防火墙"
 permalink: /lessons/06-security/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "安全组、网络 ACL 与有状态访问控制。"
 ---
 
 ## 1. 为什么 VM 内没有规则也会被拦截

@@ -1,0 +1,84 @@
+---
+layout: default
+kind: home
+title: 首页
+description: "诗酒趁年华。记录技术、诗词、阅读与运动。保持好奇，持续探索。"
+---
+<section class="home-hero">
+  <div class="hero-copy">
+    <span class="eyebrow">PERSONAL JOURNAL <span class="bullet">·</span> EXPLORE & CREATE</span>
+    <h1>诗酒趁年华<span class="hero-period">。</span></h1>
+    <p class="hero-lead">保持好奇，持续探索。</p>
+    <p class="hero-sub">技术、诗词、阅读与运动。记录所学、所见与所感。</p>
+    <div class="hero-actions">
+      <a class="button-primary" href="#explore">开始探索 <span aria-hidden="true">↗</span></a>
+      <a class="button-text" href="#latest">最新记录 <span aria-hidden="true">↓</span></a>
+    </div>
+  </div>
+  <div class="hero-graphic" aria-hidden="true">
+    <div class="hero-orbit orbit-one"></div><div class="hero-orbit orbit-two"></div><div class="hero-sun"></div><span>EXPLORE<br>WITHOUT<br>LIMITS</span>
+  </div>
+</section>
+
+<section id="explore" class="home-section">
+  <div class="section-heading"><div><span class="eyebrow">EXPLORE</span><h2>探索领域</h2></div><p>从感兴趣的地方开始。</p></div>
+  <div class="domain-grid">
+    <a class="domain-card" href="{{ '/lessons/' | relative_url }}">
+      <div class="domain-art art-tech" aria-hidden="true">
+        <svg viewBox="0 0 540 260" role="presentation"><path d="M70 184L180 92L286 168L409 65" fill="none" stroke="#78aab0" stroke-width="2" stroke-dasharray="6 8"/><path d="M70 184L286 168L452 194M180 92L452 194" fill="none" stroke="#3f6771" stroke-width="1.5"/><g fill="#e6f7f5" stroke="#467d82" stroke-width="3"><circle cx="70" cy="184" r="16"/><circle cx="180" cy="92" r="23"/><circle cx="286" cy="168" r="19"/><circle cx="409" cy="65" r="17"/><circle cx="452" cy="194" r="13"/></g><circle cx="180" cy="92" r="7" fill="#467d82"/></svg>
+      </div>
+      <div class="domain-body"><span class="eyebrow">01 / TECH</span><h3>技术 <span>↗</span></h3><p>理解原理，探索系统。</p><small>网络 · 操作系统 · 编程</small></div>
+    </a>
+    <a class="domain-card" href="{{ '/poetry/' | relative_url }}">
+      <div class="domain-art"><img src="{{ '/assets/poetry/shui-diao-ge-tou.svg' | relative_url }}" alt="" loading="lazy"></div>
+      <div class="domain-body"><span class="eyebrow">02 / POETRY</span><h3>诗词 <span>↗</span></h3><p>读千古文章，见万里山河。</p><small>唐诗 · 宋词 · 古典文学</small></div>
+    </a>
+    <a class="domain-card" href="{{ '/books/' | relative_url }}">
+      <div class="domain-art art-books" aria-hidden="true"><svg viewBox="0 0 540 260" role="presentation"><g transform="translate(130,43) rotate(-9 120 85)"><rect x="35" y="32" width="185" height="157" rx="7" fill="#d4b995"/><rect x="47" y="20" width="185" height="157" rx="7" fill="#f2e6d0" stroke="#a58964" stroke-width="2"/><path d="M139 21V176M66 60H117M66 73H114M162 74H208M162 87H208M67 136H117M162 137H208" stroke="#bca98d" stroke-width="2"/><path d="M232 35Q259 47 270 85" stroke="#ab8764" fill="none"/></g></svg></div>
+      <div class="domain-body"><span class="eyebrow">03 / BOOKS</span><h3>阅读 <span>↗</span></h3><p>以阅读拓展认知的边界。</p><small>书单 · 读书笔记 · 随想</small></div>
+    </a>
+    <a class="domain-card" href="{{ '/sports/' | relative_url }}">
+      <div class="domain-art art-sports" aria-hidden="true"><svg viewBox="0 0 540 260" role="presentation"><path d="M-35 250Q105 20 340 60T630 130" fill="none" stroke="#accbb8" stroke-width="38"/><path d="M-35 250Q105 20 340 60T630 130" fill="none" stroke="#f6f5ec" stroke-width="3" stroke-dasharray="8 13"/><circle cx="329" cy="74" r="24" fill="#486f65"/><path d="M310 105l-30 32 40 20 32-34m-36 10-17 46m42-31 47 23" stroke="#486f65" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></div>
+      <div class="domain-body"><span class="eyebrow">04 / SPORTS</span><h3>运动 <span>↗</span></h3><p>保持热爱，保持行动。</p><small>跑步 · 训练 · 户外</small></div>
+    </a>
+  </div>
+</section>
+
+<section class="home-section">
+  <div class="section-heading"><div><span class="eyebrow">COLLECTIONS</span><h2>精选专题</h2></div><p>循序渐进，持续更新。</p></div>
+  <div class="collection-grid">
+    <a class="collection-card" href="{{ '/lessons/' | relative_url }}">
+      <div class="collection-art collection-network"><img src="{{ '/assets/diagrams/overlay-underlay.svg' | relative_url }}" alt="" loading="lazy"></div>
+      <div class="collection-copy"><span class="eyebrow">TECH SERIES</span><h3>从零理解云网络</h3><p>从 VPC、路由与 NAT，到负载均衡、VXLAN 和 SDN。循序渐进地理解云网络架构与报文转发过程。</p><span class="text-link">阅读专题 ↗</span></div>
+    </a>
+    <a class="collection-card" href="{{ '/poetry/' | relative_url }}?author={{ '苏轼' | url_encode }}">
+      <div class="collection-art collection-poetry"><img src="{{ '/assets/poetry/nian-nu-jiao.svg' | relative_url }}" alt="" loading="lazy"></div>
+      <div class="collection-copy"><span class="eyebrow">POETRY COLLECTION</span><h3>苏轼诗词选</h3><p>一点浩然气，千里快哉风。从风雨、明月、江河与人间烟火中，读苏轼的豪迈、豁达与温柔。</p><span class="text-link">进入诗词 ↗</span></div>
+    </a>
+  </div>
+</section>
+
+<section class="home-section poetry-highlight">
+  <div class="section-heading"><div><span class="eyebrow">POETRY</span><h2>诗词一隅</h2></div><a class="section-more" href="{{ '/poetry/' | relative_url }}">探索更多诗词 ↗</a></div>
+  <a class="poetry-spotlight" href="{{ '/poetry/shui-diao-ge-tou/' | relative_url }}">
+    <div class="spotlight-art"><img src="{{ '/assets/poetry/shui-diao-ge-tou.svg' | relative_url }}" alt="月色下的青山与江水" loading="lazy"></div>
+    <div class="spotlight-copy"><span class="eyebrow">SU SHI · 宋词</span><h3>但愿人长久，<br>千里共婵娟。</h3><p>—— 苏轼《水调歌头·明月几时有》</p><span class="text-link">读这首词 ↗</span></div>
+  </a>
+</section>
+
+<section id="latest" class="home-section latest-section">
+  <div class="section-heading"><div><span class="eyebrow">LATEST NOTES</span><h2>最近更新</h2></div><a class="section-more" href="{{ '/archive/' | relative_url }}">查看全部 ↗</a></div>
+  {% assign updates = site.pages | where: "show_in_updates", true | sort: "updated" | reverse %}
+  <div class="updates-list">
+    {% for item in updates limit: 10 %}
+    <a class="update-row" href="{{ item.url | relative_url }}">
+      <time datetime="{{ item.updated | date: '%Y-%m-%d' }}">{{ item.updated | date: "%Y.%m.%d" }}</time>
+      <span class="update-type">{% if item.kind == 'poem' %}诗词{% else %}技术{% endif %}</span>
+      <span class="update-info"><span class="update-title">{{ item.title }}</span><span class="update-summary">{{ item.summary | default: item.excerpt }}</span></span>
+      <span class="update-arrow" aria-hidden="true">↗</span>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="home-outro"><span class="eyebrow">ABOUT THIS SPACE</span><h2>保持好奇，持续探索。</h2><p>一个记录学习、兴趣与生活的个人空间。不局限于某一种主题，也不追求固定的答案。</p><a class="text-link" href="{{ '/about/' | relative_url }}">关于本站 ↗</a></section>

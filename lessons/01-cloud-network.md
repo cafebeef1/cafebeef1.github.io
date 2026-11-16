@@ -2,6 +2,11 @@
 layout: default
 title: "云网络架构演进：从物理网络到多租户虚拟网络"
 permalink: /lessons/01-cloud-network/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "云网络的架构演进、Underlay / Overlay 以及控制与数据平面。"
 ---
 
 ## 1. 问题背景：物理网络为何难以直接承载云计算

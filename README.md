@@ -1,27 +1,63 @@
-# Engineering Notes
+# rand0m.
 
-技术博客，基于 GitHub Pages + Jekyll。
+GitHub Pages + Jekyll 个人站点：https://cafebeef1.github.io/
 
-网站：https://cafebeef1.github.io/
+> 诗酒趁年华。保持好奇，持续探索。
 
-## 内容组织
+## 网站内容
 
-首页按技术专题组织内容。目前收录云网络专题，文章索引位于 `lessons/index.md`。后续可增设其他专题并在首页添加入口，现有文章 URL 不变。
+- **技术**：`lessons/`，现有云网络系列 URL 保持不变
+- **诗词**：`poetry/works/`，按作者、朝代、体裁和题材筛选
+- **阅读**：`books/`
+- **运动**：`sports/`
+- **归档**：`archive/`，基于内容元数据自动生成
 
-## 新增文章
+首页为 `index.html`；全站布局位于 `_layouts/default.html`，样式位于 `assets/style.css`，诗词筛选使用 `assets/site.js`。不需要额外的 JavaScript 构建工具。
 
-新建带 YAML front matter 的 Markdown 文件，设置 `layout: default`、`title` 和 `permalink`，并在对应专题索引添加导航。
+## 新增诗词
 
-架构图和网络拓扑图优先使用 draw.io：可编辑源文件放在 `diagrams/`，博客中的 SVG 放在 `assets/diagrams/`。仅在简短清晰、排版稳定时使用 ASCII 示意图。
+在 `poetry/works/` 新增 Markdown 文件，头部字段参考已有作品：
 
+```yaml
+---
+layout: default
+kind: poem
+section: poetry
+title: "作品名"
+permalink: /poetry/unique-slug/
+author: "作者"
+dynasty: "朝代"
+form: "诗"
+themes: ["山水", "哲理"]
+tags: ["春景"]
+excerpt: "代表诗句"
+summary: "简介"
+cover: /assets/poetry/unique-slug.svg
+cover_alt: "配图文字描述"
+updated: 2026-11-17
+show_in_updates: true
+featured: false
+order: 10
+---
+```
 
-### 统一绘图样式（A · 现代简约）
+添加新作者、朝代、体裁或题材无需修改筛选器：诗词目录从作品元数据自动生成所有筛选选项。`cover` 可以使用站内 SVG、WebP 或 AVIF 图像，当前首批作品配图为原创、可编辑的 SVG 插画。诗词阅读页使用独立的东方美学排版。
 
-- 复杂拓扑用 `.drawio` 源文件和对应 SVG；报文头、五元组、命令输出等保留文本。
-- 浅蓝 `#EEF6FF`、浅绿 `#ECF9F3`、白色背景；圆角矩形，无阴影。
-- 转发请求使用蓝 / 绿实线，回包或逻辑关联使用灰色虚线；布局采用明确的连接通道，避免箭头与文本交叠。
-- 节点字号与图注独立管理；修改时同时更新 draw.io 源文件和 SVG，保持两种文件的布局与文字一致。
+## 新增技术文章
+
+在 `lessons/` 创建带 YAML front matter 的 Markdown 页面。保留 `permalink` 以避免链接变化。添加 `section: tech`、`updated: YYYY-MM-DD` 和 `show_in_updates: true` 可以让其自动出现在首页最近更新与归档中。
+
+## 绘图风格
+
+技术架构图沿用 **A · 现代简约** 规范：
+
+- 复杂拓扑：`diagrams/` 存 draw.io 可编辑文件，`assets/diagrams/` 存 SVG 输出。
+- 浅蓝 `#EEF6FF`、浅绿 `#ECF9F3`、白色背景，圆角矩形，无阴影。
+- 转发请求用蓝/绿实线，回包与逻辑关联用灰色虚线，避免箭头与文字交叠。
+- 简短清晰的报文头、五元组、命令输出可以继续用文本或 ASCII。
+
+诗词插画使用独立的低饱和东方美学风格，不套用技术图规范。
 
 ## 部署
 
-`main` 分支推送后，GitHub Actions 构建并部署到 GitHub Pages。仓库 Settings → Pages 的 Source 需要选择 **GitHub Actions**。
+`main` 分支推送后由 `.github/workflows/pages.yml` 使用 Jekyll 构建并部署。GitHub 仓库 Settings → Pages 的 Source 选择 **GitHub Actions**。

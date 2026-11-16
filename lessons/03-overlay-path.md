@@ -2,6 +2,11 @@
 layout: default
 title: "跨宿主机二层通信：VXLAN 封装与端点发现"
 permalink: /lessons/03-overlay-path/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "VXLAN 封装和跨宿主机二层流量的转发路径。"
 ---
 
 ## 1. 同子网通信为何需要跨物理网络

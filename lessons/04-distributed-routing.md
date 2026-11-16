@@ -2,6 +2,11 @@
 layout: default
 title: "分布式网关：VPC 跨子网流量如何转发"
 permalink: /lessons/04-distributed-routing/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "VPC 跨子网通信与分布式网关的工作机制。"
 ---
 
 ## 1. 跨子网转发的关键不是“换目标 IP”

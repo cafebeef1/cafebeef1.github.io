@@ -2,6 +2,11 @@
 layout: default
 title: "VPC 的本质：逻辑隔离、地址空间与数据平面"
 permalink: /lessons/02-vpc/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "VPC 的逻辑隔离、地址空间与数据平面基础。"
 ---
 
 ## 1. VPC 不是一台虚拟路由器

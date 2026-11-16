@@ -2,6 +2,11 @@
 layout: default
 title: "四层负载均衡：LVS-NAT、DR 与 TUN 的数据路径"
 permalink: /lessons/09-lvs/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "LVS-NAT、DR 与 TUN 三种四层负载均衡数据路径。"
 ---
 
 ## 1. VIP 与 Real Server 之间的抽象

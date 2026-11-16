@@ -2,6 +2,11 @@
 layout: default
 title: "云 NAT 网关：连接跟踪、端口容量与扩展性"
 permalink: /lessons/05-nat/
+section: tech
+section_name: TECH / CLOUD NETWORK
+updated: 2026-11-15
+show_in_updates: true
+summary: "云 NAT 网关的连接跟踪、端口容量与扩展性。"
 ---
 
 ## 1. NAT Gateway 解决的是地址共享问题
