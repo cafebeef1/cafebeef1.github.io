@@ -11,7 +11,7 @@ themes: ["人生感怀", "山水"]
 tags: ["旷达", "风雨"]
 excerpt: "莫听穿林打叶声，何妨吟啸且徐行。"
 summary: "写沙湖道中遇雨，也写面对变化时的从容。"
-cover: /assets/poetry/ding-feng-bo.svg
+cover: /assets/poetry/ding-feng-bo.webp
 cover_alt: "竹林山路上细雨飘洒，一人拄杖缓缓前行"
 updated: 2026-11-17
 show_in_updates: true

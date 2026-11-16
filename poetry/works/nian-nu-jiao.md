@@ -11,7 +11,7 @@ themes: ["怀古", "人生感怀"]
 tags: ["豪放", "历史", "赤壁"]
 excerpt: "大江东去，浪淘尽，千古风流人物。"
 summary: "借赤壁古战场怀想英雄，也感慨历史与人生的浩荡流转。"
-cover: /assets/poetry/nian-nu-jiao.svg
+cover: /assets/poetry/nian-nu-jiao.webp
 cover_alt: "赤色崖壁与江河巨浪，月色下的一叶孤舟"
 updated: 2026-11-17
 show_in_updates: true

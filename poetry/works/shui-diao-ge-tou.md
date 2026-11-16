@@ -11,7 +11,7 @@ themes: ["月夜", "思念", "人生感怀"]
 tags: ["中秋", "亲情", "哲思"]
 excerpt: "但愿人长久，千里共婵娟。"
 summary: "从明月与离合谈起，寄托对亲人的牵挂，也写下对人生无常的理解。"
-cover: /assets/poetry/shui-diao-ge-tou.svg
+cover: /assets/poetry/shui-diao-ge-tou.webp
 cover_alt: "圆月映照青山和江水，远处一叶孤舟"
 updated: 2026-11-17
 show_in_updates: true

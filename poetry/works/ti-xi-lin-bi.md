@@ -11,7 +11,7 @@ themes: ["山水", "哲理"]
 tags: ["庐山", "视角"]
 excerpt: "不识庐山真面目，只缘身在此山中。"
 summary: "从不同角度观山，发现观察位置本身也会影响理解。"
-cover: /assets/poetry/ti-xi-lin-bi.svg
+cover: /assets/poetry/ti-xi-lin-bi.webp
 cover_alt: "云雾中的庐山，层层山峰从不同方向交错起伏"
 updated: 2026-11-17
 show_in_updates: true

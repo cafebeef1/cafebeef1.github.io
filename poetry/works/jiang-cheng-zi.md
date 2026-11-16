@@ -11,7 +11,7 @@ themes: ["壮志", "人生感怀"]
 tags: ["豪放", "出猎"]
 excerpt: "会挽雕弓如满月，西北望，射天狼。"
 summary: "从出猎的壮阔场面写到报国的志向，昂扬而有力量。"
-cover: /assets/poetry/jiang-cheng-zi.svg
+cover: /assets/poetry/jiang-cheng-zi.webp
 cover_alt: "秋日平冈、落日与持弓策马的猎者"
 updated: 2026-11-17
 show_in_updates: true

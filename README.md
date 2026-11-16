@@ -32,7 +32,7 @@ themes: ["山水", "哲理"]
 tags: ["春景"]
 excerpt: "代表诗句"
 summary: "简介"
-cover: /assets/poetry/unique-slug.svg
+cover: /assets/poetry/unique-slug.webp
 cover_alt: "配图文字描述"
 updated: 2026-11-17
 show_in_updates: true
@@ -41,7 +41,7 @@ order: 10
 ---
 ```
 
-添加新作者、朝代、体裁或题材无需修改筛选器：诗词目录从作品元数据自动生成所有筛选选项。`cover` 可以使用站内 SVG、WebP 或 AVIF 图像，当前首批作品配图为原创、可编辑的 SVG 插画。诗词阅读页使用独立的东方美学排版。
+添加新作者、朝代、体裁或题材无需修改筛选器：诗词目录从作品元数据自动生成所有筛选选项。`cover` 可以使用站内 SVG、WebP 或 AVIF 图像，当前首批作品配图为原创生成的国画风 WebP 意境插画，原先 SVG 仍保留在仓库中作为历史版本。诗词阅读页使用独立的东方美学排版。
 
 ## 新增技术文章
 

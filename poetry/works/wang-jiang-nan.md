@@ -11,7 +11,7 @@ themes: ["春景", "人生感怀"]
 tags: ["新茶", "惜时"]
 excerpt: "且将新火试新茶，诗酒趁年华。"
 summary: "登台望春，念旧之后仍愿珍惜眼前时光。"
-cover: /assets/poetry/wang-jiang-nan.svg
+cover: /assets/poetry/wang-jiang-nan.webp
 cover_alt: "春水绕城、柳树新绿、夕阳映照临水高台"
 updated: 2026-11-17
 show_in_updates: true

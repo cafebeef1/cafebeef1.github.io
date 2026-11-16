@@ -11,7 +11,7 @@ themes: ["山水", "咏景"]
 tags: ["西湖", "晴雨"]
 excerpt: "欲把西湖比西子，淡妆浓抹总相宜。"
 summary: "用晴与雨的不同景致，写出西湖不受天气局限的美。"
-cover: /assets/poetry/yin-hu-shang-chu-qing.svg
+cover: /assets/poetry/yin-hu-shang-chu-qing.webp
 cover_alt: "烟雨初歇的西湖水面，远山与临水亭台"
 updated: 2026-11-17
 show_in_updates: true
